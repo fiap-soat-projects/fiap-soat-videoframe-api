@@ -18,22 +18,26 @@ public class Library : ControllerBase
         _videoController = videoController;
     }
 
-
     [HttpPost]
-    public async Task<IActionResult> UploadAsync([FromBody] UploadVideoRequest uploadVideoRequest, CancellationToken cancellationToken)
+    public async Task<IActionResult> UploadAsync(
+        [FromBody] UploadVideoRequest uploadVideoRequest,
+        CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
+
         var presenter = await _videoController.UploadAsync(uploadVideoRequest, userRequest, cancellationToken);
+
         return Ok(presenter.Id);
     }
-
 
     [HttpGet]
     [Route("{id}/link")]
     public async Task<IActionResult> GetLinkAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
+
         var presenter = await _videoController.GetLinkAsync(id, userRequest, cancellationToken);
+
         return Ok(presenter);
     }
 
@@ -42,6 +46,7 @@ public class Library : ControllerBase
     public async Task DownloadAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
+
         var presenter = await _videoController.DownloadAsync(id, userRequest, cancellationToken);
 
         Response.ContentType = presenter.Response.ContentType;
@@ -54,10 +59,14 @@ public class Library : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync([FromQuery] PaginationRequest paginationRequest, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllAsync(
+        [FromQuery] PaginationRequest paginationRequest,
+        CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
+
         var presenter = await _videoController.GetAllAsync(userRequest, paginationRequest, cancellationToken);
+
         return Ok(presenter.Videos);
     }
 
@@ -66,7 +75,9 @@ public class Library : ControllerBase
     public async Task<IActionResult> GetByIdAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
+
         var presenter = await _videoController.GetByIdAsync(id, userRequest, cancellationToken);
+
         return Ok(presenter.Video);
     }
 }
