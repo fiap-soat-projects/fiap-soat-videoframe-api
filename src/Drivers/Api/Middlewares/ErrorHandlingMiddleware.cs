@@ -1,6 +1,4 @@
-﻿using Amazon.CognitoIdentityProvider.Model;
-using Domain.Exceptions;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 
