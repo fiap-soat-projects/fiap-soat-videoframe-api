@@ -23,8 +23,8 @@ public class Library : ControllerBase
     public async Task<IActionResult> UploadAsync([FromBody] UploadVideoRequest uploadVideoRequest, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
-        await _videoController.UploadAsync(uploadVideoRequest, userRequest, cancellationToken);
-        return Ok();
+        var presenter = await _videoController.UploadAsync(uploadVideoRequest, userRequest, cancellationToken);
+        return Ok(presenter.Id);
     }
 
 
@@ -67,6 +67,6 @@ public class Library : ControllerBase
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
         var presenter = await _videoController.GetByIdAsync(id, userRequest, cancellationToken);
-        return Ok();
+        return Ok(presenter.Video);
     }
 }
