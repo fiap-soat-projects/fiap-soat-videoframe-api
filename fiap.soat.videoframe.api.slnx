@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Adapter/Adapter.csproj" Id="faed1d24-601e-41ea-9d92-67ad5cf8ee52" />
+    <Project Path="src/Domain/Domain.csproj" Id="de17368f-3180-479a-8938-27f21f262a3e" />
+  </Folder>
+  <Folder Name="/src/Drivers/">
+    <Project Path="src/Drivers/Api/Api.csproj" />
+    <Project Path="src/Infrastructure/Infrastructure.csproj" Id="c003af6d-e03c-4844-b8c0-7c8d8b5ed144" />
+  </Folder>
+</Solution>
