@@ -1,15 +1,17 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities.Enums;
 
-public class EditionContext
+namespace Domain.Entities;
+
+public class VideoEdit
 {
     public string? Id { get; set; }
     public string UserId { get; set; }
     public string Recipient { get; set; }
-    public string Type { get; set; }
-    public string Status { get; set; }
+    public EditType Type { get; set; }
+    public EditStatus Status { get; set; }
     public string VideoId { get; set; }
 
-    public EditionContext(string? id, string userId, string recipient, string type, string status, string videoId)
+    public VideoEdit(string? id, string userId, string recipient, EditType type, EditStatus status, string videoId)
     {
         Id = id;
         UserId = userId;
@@ -19,7 +21,7 @@ public class EditionContext
         VideoId = videoId;
     }
 
-    public EditionContext(string userId, string recipient, string type, string status, string videoId)
+    public VideoEdit(string userId, string recipient, EditType type, EditStatus status, string videoId)
     {
         UserId = userId;
         Recipient = recipient;

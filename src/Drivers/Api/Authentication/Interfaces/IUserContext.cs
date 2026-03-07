@@ -2,7 +2,7 @@
 
 public interface IUserContext
 {
-    string? UserId { get; }
-    string? Email { get; }
-    string? Name { get; }
+    string Id { get; }
+    string Email { get; }
+    string Name { get; }
 }

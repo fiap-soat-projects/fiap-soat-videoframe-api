@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Enums;
 
-public enum EditionStatus
+public enum EditStatus
 {
     None,
     Created,

@@ -2,6 +2,6 @@
 
 namespace Adapter.Presenters.DTOs;
 
-public record UpdateEditionStatusRequest(EditStatus Status)
+public record CreateVideoEditRequest(EditType Type, string VideoId)
 {
 }

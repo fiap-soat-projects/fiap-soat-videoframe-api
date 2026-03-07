@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Enums;
 
-public enum EditionType
+public enum EditType
 {
     None,
     Frame
