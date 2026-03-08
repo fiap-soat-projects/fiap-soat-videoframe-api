@@ -1,6 +1,6 @@
-﻿using Domain.Clients.DTOs;
+﻿using Domain.Gateways.Clients.DTOs;
 
-namespace Domain.Clients.Interfaces;
+namespace Domain.Gateways.Clients.Interfaces;
 
 public interface IBucketClient
 {

@@ -1,5 +1,5 @@
-﻿using Domain.Producers;
-using Domain.Producers.DTOs;
+﻿using Domain.Gateways.Producers;
+using Domain.Gateways.Producers.DTOs;
 using Infrastructure.Producers.DTOs;
 using Infrastructure.Producers.Interfaces;
 

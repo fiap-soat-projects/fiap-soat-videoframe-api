@@ -1,6 +1,6 @@
 ﻿using Adapter.Gateways.Extensions;
 using Domain.Entities;
-using Domain.Repositories.Interfaces;
+using Domain.Gateways.Repositories.Interfaces;
 using Infrastructure.Repositories.Entities;
 using Infrastructure.Repositories.Interfaces;
 

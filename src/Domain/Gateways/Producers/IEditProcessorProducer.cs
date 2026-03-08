@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
-using Domain.Producers.DTOs;
+using Domain.Gateways.Producers.DTOs;
 
-namespace Domain.Producers;
+namespace Domain.Gateways.Producers;
 
 public interface IEditProcessorProducer
 {

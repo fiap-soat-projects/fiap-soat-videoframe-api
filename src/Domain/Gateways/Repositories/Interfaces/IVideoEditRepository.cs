@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Enums;
 
-namespace Domain.Repositories.Interfaces;
+namespace Domain.Gateways.Repositories.Interfaces;
 
 public interface IVideoEditRepository
 {

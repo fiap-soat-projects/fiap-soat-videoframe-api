@@ -1,6 +1,6 @@
-﻿using Domain.Clients.DTOs;
-using Domain.Clients.Interfaces;
-using Domain.Entities.Enums;
+﻿using Domain.Entities.Enums;
+using Domain.Gateways.Clients.DTOs;
+using Domain.Gateways.Clients.Interfaces;
 using Infrastructure.Clients.Interfaces;
 
 namespace Adapter.Gateways.Clients;

@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Domain.Repositories.Interfaces;
+namespace Domain.Gateways.Repositories.Interfaces;
 
 public interface IVideoRepository
 {
