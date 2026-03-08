@@ -8,7 +8,7 @@ namespace Api.Endpoints;
 
 [Authorize]
 [ApiController]
-[Route("v1/user/editions")]
+[Route("v1/user/videos/edits")]
 public class VideoEdit : ControllerBase
 {
     private readonly IUserContext _userContext;
@@ -21,15 +21,15 @@ public class VideoEdit : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync(
+    public async Task<IActionResult> GetPaginatedAsync(
         [FromQuery] PaginationRequest paginationRequest,
         CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
 
-        var presenter = await _videoEditController.GetAllAsync(userRequest, paginationRequest, cancellationToken);
+        var presenter = await _videoEditController.GetPaginatedAsync(userRequest, paginationRequest, cancellationToken);
 
-        return Ok(presenter.Edits);
+        return Ok(presenter.ViewModel);
     }
 
     [HttpPost]
@@ -66,13 +66,16 @@ public class VideoEdit : ControllerBase
 
         var presenter = await _videoEditController.DownloadAsync(id, userRequest, cancellationToken);
 
-        Response.ContentType = presenter.Response.ContentType;
-        Response.Headers.ContentDisposition = $"attachment; filename={presenter.Response.FileName}";
+        Response.ContentType = presenter.ViewModel.ContentType;
+        Response.Headers.ContentDisposition = $"attachment; filename={presenter.ViewModel.FileName}";
 
-        await presenter
-            .Response
-            .Content
-            .CopyToAsync(Response.Body, cancellationToken);
+        using (presenter.ViewModel.Content)
+        {
+            await presenter
+             .ViewModel
+             .Content
+             .CopyToAsync(Response.Body, cancellationToken);
+        }
     }
 }
 

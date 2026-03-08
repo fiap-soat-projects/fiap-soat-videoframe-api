@@ -5,11 +5,11 @@ namespace Adapter.Presenters;
 
 public class GetVideoByIdPresenter
 {
-    public GetVideoResponse Video { get; init; }
+    public GetVideoResponse ViewModel { get; init; }
 
     public GetVideoByIdPresenter(Video video)
     {
-        Video = VideoToResponse(video);
+        ViewModel = VideoToResponse(video);
     }
 
     private static GetVideoResponse VideoToResponse(Video video)

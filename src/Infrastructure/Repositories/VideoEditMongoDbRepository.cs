@@ -1,5 +1,7 @@
-﻿using Infrastructure.Repositories.Abstractions;
-using Infrastructure.Repositories.Entities;
+﻿using Infrastructure.Entities;
+using Infrastructure.Entities.Page;
+using Infrastructure.MongoDb.Contexts.Interfaces;
+using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.Interfaces;
 using MongoDB.Driver;
 
@@ -7,7 +9,7 @@ namespace Infrastructure.Repositories;
 
 internal class VideoEditMongoDbRepository : BaseMongoDbRepository<VideoEditMongoDb>, IVideoEditMongoDbRepository
 {
-    internal VideoEditMongoDbRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
+    internal VideoEditMongoDbRepository(IMongoContext mongoContext) : base(mongoContext)
     {
     }
 
@@ -34,25 +36,18 @@ internal class VideoEditMongoDbRepository : BaseMongoDbRepository<VideoEditMongo
         return _mongoCollection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
     }
 
-    public async Task<IEnumerable<VideoEditMongoDb>> GetAllAsync(
+    public async Task<PagedResult<VideoEditMongoDb>> GetAllAsync(
         string userId,
-        int skip,
-        int limit,
+        int page,
+        int size,
         CancellationToken cancellationToken)
     {
         var builder = new FilterDefinitionBuilder<VideoEditMongoDb>();
-        var options = new FindOptions<VideoEditMongoDb>()
-        {
-            Skip = skip,
-            Limit = limit,
-        };
-
         var filter = builder.Eq(x => x.UserId, userId);
 
-        var cursor = await _mongoCollection.FindAsync(filter, options, cancellationToken);
-        var videoEdits = await cursor.ToListAsync(cancellationToken);
+        var pagedResult = await GetPagedAsync(page, size, filter, cancellationToken: cancellationToken);
 
-        return videoEdits ?? [];
+        return pagedResult;
     }
 
     public async Task<VideoEditMongoDb> GetByIdAsync(string id, string userId, CancellationToken cancellationToken)

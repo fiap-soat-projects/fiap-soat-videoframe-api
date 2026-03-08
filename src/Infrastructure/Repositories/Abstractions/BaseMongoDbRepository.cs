@@ -1,5 +1,6 @@
-﻿using Infrastructure.Repositories.Attributes;
-using Infrastructure.Repositories.Interfaces;
+﻿using Infrastructure.Entities.Interfaces;
+using Infrastructure.Entities.Page;
+using Infrastructure.MongoDb.Contexts.Interfaces;
 using MongoDB.Driver;
 
 namespace Infrastructure.Repositories.Abstractions;
@@ -8,17 +9,49 @@ internal abstract class BaseMongoDbRepository<TDocument> where TDocument : IDocu
 {
     protected readonly IMongoCollection<TDocument> _mongoCollection;
 
-    protected BaseMongoDbRepository(IMongoDatabase mongoDatabase)
+    protected BaseMongoDbRepository(IMongoContext mongoContext)
     {
-        var collectionName = GetCollectionName(typeof(TDocument));
-        _mongoCollection = mongoDatabase.GetCollection<TDocument>(collectionName);
+        _mongoCollection = mongoContext.GetCollection<TDocument>();
     }
 
-    protected static string GetCollectionName(Type documentType)
+    protected async Task<PagedResult<TDocument>> GetPagedAsync(
+        int page,
+        int size,
+        FilterDefinition<TDocument> filter,
+        SortDefinition<TDocument>? sort = null,
+        CancellationToken cancellationToken = default)
     {
-        return (documentType
-            .GetCustomAttributes(typeof(BsonCollectionAttribute), true)
-            .FirstOrDefault() as BsonCollectionAttribute)?
-            .CollectionName!;
+        var options = new FindOptions<TDocument>
+        {
+            Skip = (page - 1) * size,
+            Limit = size,
+            Sort = sort
+        };
+
+        var cursor = await _mongoCollection.FindAsync(
+            filter,
+            options,
+            cancellationToken);
+
+        var orders = cursor.ToEnumerable(cancellationToken: cancellationToken);
+
+        var count = await _mongoCollection.CountDocumentsAsync(
+            filter,
+            cancellationToken: cancellationToken);
+
+        var pages = size == 0
+            ? 0
+            : (int)Math.Ceiling(count / (double)size);
+
+        var pageResult = new PagedResult<TDocument>
+        {
+            Items = orders,
+            Page = page,
+            Size = size,
+            TotalCount = count,
+            TotalPages = pages
+        };
+
+        return pageResult;
     }
 }

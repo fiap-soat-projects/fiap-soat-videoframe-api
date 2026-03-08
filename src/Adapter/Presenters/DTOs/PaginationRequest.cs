@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adapter.Presenters.DTOs;
 
-public record PaginationRequest(string Skip, string Limit)
+public record PaginationRequest(string Page, string Size)
 {
 
 }

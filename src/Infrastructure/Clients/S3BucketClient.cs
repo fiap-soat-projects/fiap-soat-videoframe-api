@@ -13,10 +13,10 @@ internal class S3BucketClient : IS3BucketClient
     private readonly string _bucketName;
     private readonly AmazonS3Client _client;
 
-    public S3BucketClient(AmazonS3Client amazonS3Client)
+    public S3BucketClient(AmazonS3Client amazonS3Client, string bucketName)
     {
         _client = amazonS3Client;
-        _bucketName = StaticEnvironmentVariableProvider.S3BucketName;
+        _bucketName = bucketName;
     }
 
     public async Task<Stream> DownloadAsync(string path, CancellationToken cancellationToken)

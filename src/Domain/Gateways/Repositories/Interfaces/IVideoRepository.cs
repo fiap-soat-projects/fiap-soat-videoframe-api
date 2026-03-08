@@ -1,11 +1,12 @@
-﻿using Domain.Entities;
+﻿using Business.Entities.Page;
+using Domain.Entities;
 
 namespace Domain.Gateways.Repositories.Interfaces;
 
 public interface IVideoRepository
 {
     Task<Video> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
-    Task<IEnumerable<Video>> GetAllAsync(
+    Task<Pagination<Video>> GetAllAsync(
         string userId,
         int skip,
         int limit,

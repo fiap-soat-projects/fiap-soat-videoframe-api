@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Business.Entities.Page;
+using Domain.Entities;
 using Domain.Entities.Enums;
 
 namespace Domain.Gateways.Repositories.Interfaces;
@@ -6,7 +7,7 @@ namespace Domain.Gateways.Repositories.Interfaces;
 public interface IVideoEditRepository
 {
     Task<VideoEdit> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
-    Task<IEnumerable<VideoEdit>> GetAllAsync(
+    Task<Pagination<VideoEdit>> GetAllAsync(
         string userId,
         int skip,
         int limit,

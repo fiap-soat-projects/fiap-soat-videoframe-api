@@ -1,5 +1,5 @@
 ﻿namespace Domain.UseCases.Interfaces;
 
-public interface IEditionContextUseCase
+public interface IEditVideoUseCase
 {
 }

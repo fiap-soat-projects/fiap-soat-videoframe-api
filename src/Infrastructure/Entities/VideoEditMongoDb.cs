@@ -1,9 +1,11 @@
 ﻿using Domain.Entities;
 using Infrastructure.Repositories.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Infrastructure.Repositories.Entities;
+namespace Infrastructure.Entities;
 
-[BsonCollection("videoEdit")]
+[BsonIgnoreExtraElements]
+[BsonDiscriminator("videoEdit")]
 public class VideoEditMongoDb : Document
 {
     public string? UserId { get; set; }

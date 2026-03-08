@@ -4,6 +4,7 @@ public static class StaticEnvironmentVariableProvider
 {
     private const string MONGODB_CONNECTION_STRING = "MongoDbConnectionString";
     private const string KAFKA_CONNECTION_STRING = "KafkaConnectionString";
+    private const string KAFKA_PRODUCE_TOPIC_NAME = "KafkaProduceTopicName";
     private const string S3_BUCKET_BASE_URL = "S3BucketBaseUrl";
     private const string S3_BUCKET_USER = "S3BucketUser";
     private const string S3_BUCKET_PASSWORD = "S3BucketPassword";
@@ -14,6 +15,7 @@ public static class StaticEnvironmentVariableProvider
 
     internal static readonly string MongoDbConnectionString;
     internal static readonly string KafkaConnectionString;
+    internal static readonly string KafkaProduceTopicName;
     internal static readonly string S3BucketBaseUrl;
     internal static readonly string S3BucketUser;
     internal static readonly string S3BucketPassword;
@@ -26,6 +28,7 @@ public static class StaticEnvironmentVariableProvider
     {
         MongoDbConnectionString = GetRequiredEnvironmentVariable(MONGODB_CONNECTION_STRING);
         KafkaConnectionString = GetRequiredEnvironmentVariable(KAFKA_CONNECTION_STRING);
+        KafkaProduceTopicName = GetRequiredEnvironmentVariable(KAFKA_PRODUCE_TOPIC_NAME);
         S3BucketBaseUrl = GetRequiredEnvironmentVariable(S3_BUCKET_BASE_URL);
         S3BucketUser = GetRequiredEnvironmentVariable(S3_BUCKET_USER);
         S3BucketPassword = GetRequiredEnvironmentVariable(S3_BUCKET_PASSWORD);

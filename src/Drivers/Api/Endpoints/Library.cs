@@ -22,12 +22,14 @@ public class Library : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> UploadAsync(
-        [FromBody] UploadVideoRequest uploadVideoRequest,
+        [FromHeader] string fileName,
         CancellationToken cancellationToken)
     {
+        var req = new UploadVideoRequest(fileName, Request.Body);
+
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
 
-        var presenter = await _videoController.UploadAsync(uploadVideoRequest, userRequest, cancellationToken);
+        var presenter = await _videoController.UploadAsync(req, userRequest, cancellationToken);
 
         return Ok(presenter.Id);
     }
@@ -51,28 +53,28 @@ public class Library : ControllerBase
 
         var presenter = await _videoController.DownloadAsync(id, userRequest, cancellationToken);
 
-        Response.ContentType = presenter.Response.ContentType;
-        Response.Headers.ContentDisposition = $"attachment; filename={presenter.Response.FileName}";
+        Response.ContentType = presenter.ViewModel.ContentType;
+        Response.Headers.ContentDisposition = $"attachment; filename={presenter.ViewModel.FileName}";
 
-        using (presenter.Response.Content)
+        using (presenter.ViewModel.Content)
         {
             await presenter
-             .Response
+             .ViewModel
              .Content
              .CopyToAsync(Response.Body, cancellationToken);
         }
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync(
+    public async Task<IActionResult> GetPaginatedAsync(
         [FromQuery] PaginationRequest paginationRequest,
         CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
 
-        var presenter = await _videoController.GetAllAsync(userRequest, paginationRequest, cancellationToken);
+        var presenter = await _videoController.GetPaginatedAsync(userRequest, paginationRequest, cancellationToken);
 
-        return Ok(presenter.Videos);
+        return Ok(presenter.ViewModel);
     }
 
     [HttpGet]
@@ -83,6 +85,6 @@ public class Library : ControllerBase
 
         var presenter = await _videoController.GetByIdAsync(id, userRequest, cancellationToken);
 
-        return Ok(presenter.Video);
+        return Ok(presenter.ViewModel);
     }
 }

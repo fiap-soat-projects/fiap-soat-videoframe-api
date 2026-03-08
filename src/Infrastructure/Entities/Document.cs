@@ -1,9 +1,9 @@
-﻿using Infrastructure.Repositories.Interfaces;
+﻿using Infrastructure.Entities.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 
-namespace Infrastructure.Repositories.Entities;
+namespace Infrastructure.Entities;
 
 public abstract class Document : IDocument
 {

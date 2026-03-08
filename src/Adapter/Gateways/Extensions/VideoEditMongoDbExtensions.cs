@@ -1,6 +1,8 @@
-﻿using Domain.Entities;
+﻿using Business.Entities.Page;
+using Domain.Entities;
 using Domain.Entities.Enums;
-using Infrastructure.Repositories.Entities;
+using Infrastructure.Entities;
+using Infrastructure.Entities.Page;
 
 namespace Adapter.Gateways.Extensions;
 
@@ -32,6 +34,20 @@ public static class VideoEditMongoDbExtensions
 
             return videoEdit;
         }
+    }
 
+    extension(PagedResult<VideoEditMongoDb> pagedResult)
+    {
+        public Pagination<VideoEdit> ToDomain()
+        {
+            return new Pagination<VideoEdit>
+            {
+                Page = pagedResult.Page,
+                Size = pagedResult.Size,
+                TotalPages = pagedResult.TotalPages,
+                TotalCount = pagedResult.TotalCount,
+                Items = pagedResult.Items.Select(item => item.ToDomain())
+            };
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Infrastructure.Repositories.Interfaces;
+namespace Infrastructure.Entities.Interfaces;
 
 internal interface IDocument
 {

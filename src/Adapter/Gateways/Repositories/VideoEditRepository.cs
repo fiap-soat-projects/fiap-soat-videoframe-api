@@ -1,8 +1,9 @@
 ﻿using Adapter.Gateways.Extensions;
+using Business.Entities.Page;
 using Domain.Entities;
 using Domain.Entities.Enums;
 using Domain.Gateways.Repositories.Interfaces;
-using Infrastructure.Repositories.Entities;
+using Infrastructure.Entities;
 using Infrastructure.Repositories.Interfaces;
 
 namespace Adapter.Gateways.Repositories;
@@ -21,10 +22,10 @@ internal class VideoEditRepository : IVideoEditRepository
         return _videoEditMongoDbRepository.DeleteAsync(id, userId, cancellationToken);
     }
 
-    public async Task<IEnumerable<VideoEdit>> GetAllAsync(string userId, int skip, int limit, CancellationToken cancellationToken)
+    public async Task<Pagination<VideoEdit>> GetAllAsync(string userId, int skip, int limit, CancellationToken cancellationToken)
     {
-        var entities = await _videoEditMongoDbRepository.GetAllAsync(userId, skip, limit, cancellationToken);
-        var videoEdits = entities.Select(x => x.ToDomain());
+        var pagedResult = await _videoEditMongoDbRepository.GetAllAsync(userId, skip, limit, cancellationToken);
+        var videoEdits = pagedResult.ToDomain();
 
         return videoEdits;
     }

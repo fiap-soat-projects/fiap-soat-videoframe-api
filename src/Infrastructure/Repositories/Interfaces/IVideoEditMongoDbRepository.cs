@@ -1,11 +1,12 @@
-﻿using Infrastructure.Repositories.Entities;
+﻿using Infrastructure.Entities;
+using Infrastructure.Entities.Page;
 
 namespace Infrastructure.Repositories.Interfaces;
 
 public interface IVideoEditMongoDbRepository
 {
     Task<VideoEditMongoDb> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
-    Task<IEnumerable<VideoEditMongoDb>> GetAllAsync(
+    Task<PagedResult<VideoEditMongoDb>> GetAllAsync(
         string userId, 
         int skip,
         int limit, 

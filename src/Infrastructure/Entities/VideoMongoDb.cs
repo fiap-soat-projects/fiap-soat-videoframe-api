@@ -1,10 +1,11 @@
 ﻿using Domain.Entities;
-using Infrastructure.Repositories.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Infrastructure.Repositories.Entities;
+namespace Infrastructure.Entities;
 
 
-[BsonCollection("video")]
+[BsonIgnoreExtraElements]
+[BsonDiscriminator("video")]
 public class VideoMongoDb : Document
 {
     public string? UserId { get; set; }
