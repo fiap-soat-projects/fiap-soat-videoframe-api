@@ -52,10 +52,13 @@ public class Library : ControllerBase
         Response.ContentType = presenter.Response.ContentType;
         Response.Headers.ContentDisposition = $"attachment; filename={presenter.Response.FileName}";
 
-        await presenter
-            .Response
-            .Content
-            .CopyToAsync(Response.Body, cancellationToken);
+        using (presenter.Response.Content)
+        {
+            await presenter
+             .Response
+             .Content
+             .CopyToAsync(Response.Body, cancellationToken);
+        }
     }
 
     [HttpGet]
