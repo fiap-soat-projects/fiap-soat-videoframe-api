@@ -39,9 +39,23 @@ public class VideoEdit : ControllerBase
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
 
-        var id = _videoEditController.CreateAsync(req, userRequest, cancellationToken);
+        var id = await _videoEditController.CreateAsync(req, userRequest, cancellationToken);
 
         return Ok(id);
+    }
+
+
+    [HttpPost]
+    [Route("{id}/start")]
+    public async Task<IActionResult> StartAsync(
+        [FromBody] string id,
+        CancellationToken cancellationToken)
+    {
+        var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
+
+        await _videoEditController.StartAsync(id, userRequest, cancellationToken);
+
+        return NoContent();
     }
 
     [HttpPatch]

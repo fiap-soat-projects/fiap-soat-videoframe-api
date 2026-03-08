@@ -27,13 +27,8 @@ internal class VideoEditController : IVideoEditController
             EditStatus.Created,
             createEditionRequest.VideoId);
 
-        videoEdit.Id = await _videoEditUseCase.CreateAsync(videoEdit, cancellationToken);
-        var video = await _videoUseCase.GetByIdAsync(videoEdit.VideoId!, userRequest.Id, cancellationToken);
-
-        var user = new User(userRequest.Id, userRequest.Name, userRequest.Recipient);
-        await _videoEditUseCase.ProcessAsync(video, videoEdit, user, cancellationToken);
-
-        return videoEdit.Id;
+        var id = await _videoEditUseCase.CreateAsync(videoEdit, cancellationToken);
+        return id;
     }
 
     public async Task<DownloadPresenter> DownloadAsync(string id, UserRequest userRequest, CancellationToken cancellationToken)
@@ -62,6 +57,17 @@ internal class VideoEditController : IVideoEditController
         var videoEdits = await _videoEditUseCase.GetPaginatedAsync(userRequest.Id, paginationRequest.Page, paginationRequest.Size, cancellationToken);
 
         return new GetPaginatedVideoEditsPresenter(videoEdits);
+    }
+
+    public async Task StartAsync(string id, UserRequest userRequest, CancellationToken cancellationToken)
+    {
+        var videoEdit = await _videoEditUseCase.GetByIdAsync(id, userRequest.Id, cancellationToken);
+        var video = await _videoUseCase.GetByIdAsync(videoEdit.VideoId!, userRequest.Id, cancellationToken);
+        var user = new User(userRequest.Id, userRequest.Name, userRequest.Recipient);
+
+        await _videoEditUseCase.ProcessAsync(video, videoEdit, user, cancellationToken);
+
+        await _videoEditUseCase.UpdateStatusAsync(id, EditStatus.Processing, user.Id!, cancellationToken);
     }
 
     public async Task UpdateStatusAsync(string id, EditStatus status, UserRequest userRequest, CancellationToken cancellationToken)
