@@ -51,7 +51,17 @@ public class VideoEdit : IDomainEntity
         }
     }
 
-    public VideoEdit(string? id, DateTime createdAt, string userId, string recipient, EditType type, EditStatus status, string videoId)
+    public string? EditPath { get; set; }
+
+    public VideoEdit(
+        string? id, 
+        DateTime createdAt,
+        string userId, 
+        string recipient,
+        EditType type,
+        EditStatus status,
+        string videoId,
+        string editPath)
     {
         Id = id;
         CreatedAt = createdAt;
@@ -60,6 +70,7 @@ public class VideoEdit : IDomainEntity
         Type = type;
         Status = status;
         VideoId = videoId;
+        EditPath = editPath;
     }
 
     public VideoEdit(string userId, string recipient, EditType type, EditStatus status, string videoId)
