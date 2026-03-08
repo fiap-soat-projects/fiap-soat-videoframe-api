@@ -10,4 +10,13 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Clients\" />
+    <Folder Include="Producers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="3.7.0" />
+  </ItemGroup>
+
 </Project>
