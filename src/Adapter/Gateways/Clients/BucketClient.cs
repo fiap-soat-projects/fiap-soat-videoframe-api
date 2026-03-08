@@ -26,10 +26,9 @@ internal class BucketClient : IBucketClient
 
         var path = string.Format(PATH_TEMPLATE, file.UserId, file.Type.ToString(), fileNameWithExtension);
 
-        using (file.FileStream)
-        {
-            await _s3BucketClient.UploadAsync(path, file.FileStream, cancellationToken);
-        }
+ 
+        await _s3BucketClient.UploadAsync(path, file.FileStream, cancellationToken);
+        
 
         return path;
     }
@@ -42,5 +41,10 @@ internal class BucketClient : IBucketClient
             FileType.VideoEdit => "zip",
             _ => "bin"        
         };
+    }
+
+    public Task<string> GetPreSignedDownloadUrlAsync(string filePath, CancellationToken cancellationToken)
+    {
+        return _s3BucketClient.GetPreSignedDownloadUrlAsync(filePath, cancellationToken);
     }
 }

@@ -21,7 +21,7 @@ internal class VideoController : IVideoController
     {
         var video = await _videoUseCase.GetByIdAsync(id, userRequest.Id, cancellationToken);
 
-        var videoStream =  await _videoUseCase.DownloadAsync(id, userRequest.Id, cancellationToken);
+        var videoStream =  await _videoUseCase.DownloadAsync(video.Path!, cancellationToken);
 
         return new DownloadPresenter(video.Name!, video.ContentType!, videoStream);
     }

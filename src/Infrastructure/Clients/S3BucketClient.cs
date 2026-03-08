@@ -32,25 +32,39 @@ internal class S3BucketClient : IS3BucketClient
         return response.ResponseStream; 
     }
 
-    public async Task UploadAsync(string path, Stream content, CancellationToken cancellationToken)
+    public async Task<string> GetPreSignedDownloadUrlAsync(string path, CancellationToken cancellationToken)
     {
-        if (content == null) throw new ArgumentNullException(nameof(content));
-
-        if (content.CanSeek)
-        {
-            content.Position = 0;
-        }
-
-        var putRequest = new PutObjectRequest
+        var downloadRequest = new GetPreSignedUrlRequest
         {
             BucketName = _bucketName,
             Key = path,
-            InputStream = content,
-            ContentType = "video/mp4"
+            Verb = HttpVerb.GET,
+            Expires = DateTime.UtcNow.AddMinutes(10)
         };
 
-        await _client.PutObjectAsync(putRequest, cancellationToken).ConfigureAwait(false);
+        return await _client.GetPreSignedURLAsync(downloadRequest);
     }
 
+    public async Task UploadAsync(string path, Stream content, CancellationToken cancellationToken)
+    {
+        using (content)
+        {
+            if (content == null) throw new ArgumentNullException(nameof(content));
 
+            if (content.CanSeek)
+            {
+                content.Position = 0;
+            }
+
+            var putRequest = new PutObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = path,
+                InputStream = content,
+                ContentType = "video/mp4"
+            };
+
+            await _client.PutObjectAsync(putRequest, cancellationToken).ConfigureAwait(false);
+        }
+    }
 }

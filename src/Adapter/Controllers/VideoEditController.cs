@@ -10,10 +10,12 @@ namespace Adapter.Controllers;
 internal class VideoEditController : IVideoEditController
 {
     private readonly IVideoEditUseCase _videoEditUseCase;
+    private readonly IVideoUseCase _videoUseCase;
 
-    public VideoEditController(IVideoEditUseCase videoEditUseCase)
+    public VideoEditController(IVideoEditUseCase videoEditUseCase, IVideoUseCase videoUseCase)
     {
         _videoEditUseCase = videoEditUseCase;
+        _videoUseCase = videoUseCase;
     }
 
     public async Task<string> CreateAsync(CreateVideoEditRequest createEditionRequest, UserRequest userRequest, CancellationToken cancellationToken)
@@ -25,12 +27,13 @@ internal class VideoEditController : IVideoEditController
             EditStatus.Created,
             createEditionRequest.VideoId);
 
-        var id = await _videoEditUseCase.CreateAsync(videoEdit, cancellationToken);
+        videoEdit.Id = await _videoEditUseCase.CreateAsync(videoEdit, cancellationToken);
+        var video = await _videoUseCase.GetByIdAsync(videoEdit.VideoId!, userRequest.Id, cancellationToken);
+
         var user = new User(userRequest.Id, userRequest.Name, userRequest.Recipient);
+        await _videoEditUseCase.ProcessAsync(video, videoEdit, user, cancellationToken);
 
-        await _videoEditUseCase.ProcessAsync(videoEdit, user, cancellationToken);
-
-        return id;
+        return videoEdit.Id;
     }
 
     public async Task<DownloadPresenter> DownloadAsync(string id, UserRequest userRequest, CancellationToken cancellationToken)

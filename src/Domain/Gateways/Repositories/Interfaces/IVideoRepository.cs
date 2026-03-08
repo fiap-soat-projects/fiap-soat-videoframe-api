@@ -5,11 +5,11 @@ namespace Domain.Gateways.Repositories.Interfaces;
 
 public interface IVideoRepository
 {
-    Task<Video> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
-    Task<Pagination<Video>> GetAllAsync(
+    Task<Video?> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
+    Task<Pagination<Video>> GetPaginatedAsync(
         string userId,
-        int skip,
-        int limit,
+        int page,
+        int size,
         CancellationToken cancellationToken);
 
     Task<string> InsertOneAsync(Video video, CancellationToken cancellationToken);

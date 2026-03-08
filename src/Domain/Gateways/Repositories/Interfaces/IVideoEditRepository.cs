@@ -6,11 +6,11 @@ namespace Domain.Gateways.Repositories.Interfaces;
 
 public interface IVideoEditRepository
 {
-    Task<VideoEdit> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
-    Task<Pagination<VideoEdit>> GetAllAsync(
+    Task<VideoEdit?> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
+    Task<Pagination<VideoEdit>> GetPaginatedAsync(
         string userId,
-        int skip,
-        int limit,
+        int page,
+        int size,
         CancellationToken cancellationToken);
 
     Task<string> InsertOneAsync(VideoEdit videoEdit, CancellationToken cancellationToken);

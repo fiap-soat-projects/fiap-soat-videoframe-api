@@ -21,7 +21,7 @@ internal class VideoRepository : IVideoRepository
         return _videoMongoDbRepository.DeleteAsync(id, userId, cancellationToken);
     }
 
-    public async Task<Pagination<Video>> GetAllAsync(string userId, int page, int size, CancellationToken cancellationToken)
+    public async Task<Pagination<Video>> GetPaginatedAsync(string userId, int page, int size, CancellationToken cancellationToken)
     {
         var pagedResult = await _videoMongoDbRepository.GetAllAsync(userId, page, size, cancellationToken);
         var videos = pagedResult.ToDomain();

@@ -6,7 +6,8 @@ namespace Domain.UseCases.Interfaces;
 
 public interface IVideoEditUseCase
 {
-    Task<string> ProcessAsync(
+    Task ProcessAsync(
+        Video video,
         VideoEdit videoEdit,
         User user,
         CancellationToken cancellationToken);

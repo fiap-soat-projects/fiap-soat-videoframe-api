@@ -22,7 +22,7 @@ internal class VideoEditRepository : IVideoEditRepository
         return _videoEditMongoDbRepository.DeleteAsync(id, userId, cancellationToken);
     }
 
-    public async Task<Pagination<VideoEdit>> GetAllAsync(string userId, int skip, int limit, CancellationToken cancellationToken)
+    public async Task<Pagination<VideoEdit>> GetPaginatedAsync(string userId, int skip, int limit, CancellationToken cancellationToken)
     {
         var pagedResult = await _videoEditMongoDbRepository.GetAllAsync(userId, skip, limit, cancellationToken);
         var videoEdits = pagedResult.ToDomain();

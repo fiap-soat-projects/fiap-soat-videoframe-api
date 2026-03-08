@@ -7,5 +7,6 @@ public enum EditStatus
     Processing,
     Processed,
     Sending,
-    Sent
+    Sent,
+    Error
 }
