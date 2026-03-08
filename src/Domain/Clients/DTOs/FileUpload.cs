@@ -1,5 +1,7 @@
-﻿namespace Domain.Clients.DTOs;
+﻿using Domain.Entities.Enums;
 
-public record FileUpload(string FilePath, Stream FileStream)
+namespace Domain.Clients.DTOs;
+
+public record FileUpload(string UserId, string Name, FileType Type, Stream FileStream)
 {
 }

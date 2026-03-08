@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Clients.Interfaces;
 
-internal interface IS3BucketClient
+public interface IS3BucketClient
 {
     Task UploadAsync(
         string path,

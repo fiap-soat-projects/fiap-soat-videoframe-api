@@ -1,4 +1,5 @@
-﻿using Infrastructure.Repositories.Attributes;
+﻿using Domain.Entities;
+using Infrastructure.Repositories.Attributes;
 
 namespace Infrastructure.Repositories.Entities;
 
@@ -10,4 +11,12 @@ public class VideoMongoDb : Document
     public string? Path { get; set; }
     public string? Name { get; set; }
     public string? ContentType { get; set; }
+
+    public VideoMongoDb(Video video)
+    {
+        UserId = video.UserId;
+        Path = video.Path;
+        Name = video.Name;
+        ContentType = video.ContentType;
+    }
 }

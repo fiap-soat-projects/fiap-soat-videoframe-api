@@ -1,10 +1,12 @@
 ﻿using Adapter.Controllers.Interfaces;
 using Adapter.Presenters.DTOs;
 using Api.Authentication.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints;
 
+[Authorize]
 [ApiController]
 [Route("v1/user/editions")]
 public class VideoEdit : ControllerBase
