@@ -11,19 +11,27 @@ internal class VideoEditMongoDbRepository : BaseMongoDbRepository<VideoEditMongo
     {
     }
 
-    public async Task DeleteAsync(string id, string userId, CancellationToken cancellationToken)
+    public Task DeleteAsync(string id, string userId, CancellationToken cancellationToken)
     {
         var builder = new FilterDefinitionBuilder<VideoEditMongoDb>();
 
         var filter = builder.Eq(x => x.Id, id)
             & builder.Eq(x => x.UserId, userId);
 
-        await _mongoCollection.DeleteOneAsync(filter, new(), cancellationToken);
+        return _mongoCollection.DeleteOneAsync(filter, new(), cancellationToken);
     }
 
     public Task UpdateStatusAsync(string id, string userId, string status, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var builder = new FilterDefinitionBuilder<VideoEditMongoDb>();
+
+        var filter = builder.Eq(x => x.Id, id)
+            & builder.Eq(x => x.UserId, userId);
+
+        var update = Builders<VideoEditMongoDb>.Update
+            .Set(x => x.Status, status);
+
+        return _mongoCollection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
     }
 
     public async Task<IEnumerable<VideoEditMongoDb>> GetAllAsync(
