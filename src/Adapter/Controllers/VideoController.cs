@@ -1,10 +1,12 @@
-﻿using Adapter.Controllers.Interfaces;
+﻿using Adapter.Controllers.Exceptions;
+using Adapter.Controllers.Interfaces;
 using Adapter.Presenters;
 using Adapter.Presenters.DTOs;
 using Domain.Entities;
 using Domain.Entities.Enums;
 using Domain.Gateways.Clients.DTOs;
 using Domain.UseCases.Interfaces;
+using System.Xml.Linq;
 
 namespace Adapter.Controllers;
 
@@ -48,11 +50,28 @@ internal class VideoController : IVideoController
 
     public async Task<UploadPresenter> UploadAsync(UploadVideoRequest uploadVideoRequest, UserRequest userRequest, CancellationToken cancellationToken)
     {
-        var fileUpload = new FileUpload(userRequest.Id, uploadVideoRequest.FileName, FileType.Video, uploadVideoRequest.Content);
+        var existingVideo = await _videoUseCase.GetByNameAsync(uploadVideoRequest.FileName, userRequest.Id, cancellationToken);
+
+        if (existingVideo != null) 
+        {
+            throw new VideoAlrearyCreatedException();
+        }
+
+        var fileUpload = new FileUpload(
+            userRequest.Id,
+            uploadVideoRequest.FileName, 
+            uploadVideoRequest.ContentLength,
+            uploadVideoRequest.ContentType,
+            uploadVideoRequest.Content);
 
         var path = await _videoUseCase.UploadAsync(fileUpload, cancellationToken);
 
-        var video = new Video(userRequest.Id, path, uploadVideoRequest.FileName, uploadVideoRequest.ContentType);
+        var video = new Video(
+            userRequest.Id,
+            path,
+            uploadVideoRequest.FileName,
+            uploadVideoRequest.ContentType, 
+            uploadVideoRequest.ContentLength);
 
         var id = await _videoUseCase.CreateAsync(video, cancellationToken);
 

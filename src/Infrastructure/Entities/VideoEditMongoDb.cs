@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Infrastructure.Repositories.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Infrastructure.Entities;
@@ -13,6 +12,7 @@ public class VideoEditMongoDb : Document
     public string? Type { get; set; }
     public string? Status { get; set; }
     public string? VideoId { get; set; }
+    public string? EditPath { get; set; }
 
     public VideoEditMongoDb(VideoEdit videoEdit)
     {
@@ -21,5 +21,6 @@ public class VideoEditMongoDb : Document
         Type = videoEdit.Type.ToString();
         Status = videoEdit.Status.ToString();
         VideoId = videoEdit.VideoId;
+        EditPath = videoEdit.EditPath;
     }
 }

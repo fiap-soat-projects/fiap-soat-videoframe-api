@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("v1/user/videos")]
 public class Library : ControllerBase
@@ -21,11 +21,14 @@ public class Library : ControllerBase
     }
 
     [HttpPost]
+    [DisableRequestSizeLimit]
     public async Task<IActionResult> UploadAsync(
         [FromHeader] string fileName,
         CancellationToken cancellationToken)
     {
-        var req = new UploadVideoRequest(fileName, Request.Body);
+        Console.WriteLine($"ContentLength: {Request.ContentLength}");
+
+        var req = new UploadVideoRequest(fileName, Request.ContentType!, Request.ContentLength ?? -1, Request.Body);
 
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
 
@@ -56,13 +59,12 @@ public class Library : ControllerBase
         Response.ContentType = presenter.ViewModel.ContentType;
         Response.Headers.ContentDisposition = $"attachment; filename={presenter.ViewModel.FileName}";
 
-        using (presenter.ViewModel.Content)
-        {
-            await presenter
-             .ViewModel
-             .Content
-             .CopyToAsync(Response.Body, cancellationToken);
-        }
+        Response.RegisterForDispose(presenter.ViewModel.Content);
+
+        await presenter
+            .ViewModel
+            .Content
+            .CopyToAsync(Response.Body, cancellationToken); 
     }
 
     [HttpGet]

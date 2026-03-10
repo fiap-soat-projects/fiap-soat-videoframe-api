@@ -39,6 +39,13 @@ internal class VideoUseCase : IVideoUseCase
         return video!;
     }
 
+    public async Task<Video?> GetByNameAsync(string name, string userId, CancellationToken cancellationToken)
+    {
+        var video = await _videoRepository.GetByNameAsync(name, userId, cancellationToken);
+
+        return video;
+    }
+
     public async Task<string> GetLinkAsync(string id, string userId, CancellationToken cancellationToken)
     {
         var video = await GetByIdAsync(id, userId, cancellationToken);

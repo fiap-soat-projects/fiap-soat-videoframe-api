@@ -14,7 +14,7 @@ public class GetVideoByIdPresenter
 
     private static GetVideoResponse VideoToResponse(Video video)
     {
-        var videoResponse = new GetVideoResponse(video.Id!, video.Name, video.Path);
+        var videoResponse = new GetVideoResponse(video.Id!, video.Name!, video.Path!, video.ContentType!, video.ContentLength);
         return videoResponse;
     }
 }

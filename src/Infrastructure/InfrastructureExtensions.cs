@@ -7,6 +7,8 @@ using Infrastructure.MongoDb.Connections;
 using Infrastructure.MongoDb.Connections.Interfaces;
 using Infrastructure.MongoDb.Factories;
 using Infrastructure.MongoDb.Options;
+using Infrastructure.Producers;
+using Infrastructure.Producers.Interfaces;
 using Infrastructure.Providers;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Interfaces;
@@ -16,7 +18,6 @@ namespace Infrastructure;
 
 public static class InfrastructureExtensions
 {
-    const string MONGO_CONNECTION_STRING_VARIABLE_KEY = "MongoConnectionString";
     const string APP_NAME_VARIABLE_KEY = "AppName";
     const string DEFAULT_CLUSTER_NAME = "default";
 
@@ -44,10 +45,7 @@ public static class InfrastructureExtensions
 
     private static IServiceCollection RegisterConnections(this IServiceCollection services)
     {
-        var mongoConnectionString = Environment.GetEnvironmentVariable(MONGO_CONNECTION_STRING_VARIABLE_KEY);
-
-        EnvironmentVariableNotFoundException.ThrowIfIsNullOrWhiteSpace(mongoConnectionString, MONGO_CONNECTION_STRING_VARIABLE_KEY);
-
+        var mongoConnectionString = StaticEnvironmentVariableProvider.MongoDbConnectionString;
         var appName = Environment.GetEnvironmentVariable(APP_NAME_VARIABLE_KEY);
 
         EnvironmentVariableNotFoundException.ThrowIfIsNullOrWhiteSpace(appName, APP_NAME_VARIABLE_KEY);
@@ -93,6 +91,7 @@ public static class InfrastructureExtensions
 
 
         services.AddSingleton(producer);
+        services.AddSingleton<IKafkaProcessorProducer, KafkaProcessorProducer>();
 
         return services;
     }

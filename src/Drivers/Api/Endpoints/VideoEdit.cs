@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("v1/user/videos/edits")]
 public class VideoEdit : ControllerBase
@@ -45,10 +45,9 @@ public class VideoEdit : ControllerBase
     }
 
 
-    [HttpPost]
-    [Route("{id}/start")]
+    [HttpPost("{id}/start")]
     public async Task<IActionResult> StartAsync(
-        [FromBody] string id,
+        [FromRoute] string id,
         CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
@@ -58,10 +57,9 @@ public class VideoEdit : ControllerBase
         return NoContent();
     }
 
-    [HttpPatch]
-    [Route("{id}/status")]
+    [HttpPatch("{id}/status")]
     public async Task<IActionResult> UpdateStatusAsync(
-        [FromQuery] string id, 
+        [FromRoute] string id, 
         [FromBody] UpdateEditionStatusRequest req,
         CancellationToken cancellationToken)
     {
@@ -72,8 +70,7 @@ public class VideoEdit : ControllerBase
         return NoContent();
     }
 
-    [HttpGet]
-    [Route("{id}/download")]
+    [HttpGet("{id}/download")]
     public async Task DownloadAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);

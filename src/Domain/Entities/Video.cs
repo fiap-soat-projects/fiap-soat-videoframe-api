@@ -53,15 +53,26 @@ public class Video : IDomainEntity
         }
     }
 
-    public Video(string userId, string path, string name, string contentType)
+    public long ContentLength
+    {
+        get;
+        set
+        {
+            InvalidEntityPropertyException<Video>.ThrowIfIsEqualOrLowerThanZero(value, nameof(ContentLength));
+            field = value;
+        }
+    }
+
+    public Video(string userId, string path, string name, string contentType, long contentLength)
     {
         UserId = userId;
         Path = path;
         Name = name;
         ContentType = contentType;
+        ContentLength = contentLength;
     }
 
-    public Video(string id, DateTime createdAt, string userId, string path, string name, string contentType)
+    public Video(string id, DateTime createdAt, string userId, string path, string name, string contentType, long contentLength)
     {
         Id = id;
         CreatedAt = createdAt;
@@ -69,5 +80,6 @@ public class Video : IDomainEntity
         Path = path;
         Name = name;
         ContentType = contentType;
+        ContentLength = contentLength;
     }
 }

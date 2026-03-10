@@ -30,10 +30,10 @@ internal class VideoEditRepository : IVideoEditRepository
         return videoEdits;
     }
 
-    public async Task<VideoEdit> GetByIdAsync(string id, string userId, CancellationToken cancellationToken)
+    public async Task<VideoEdit?> GetByIdAsync(string id, string userId, CancellationToken cancellationToken)
     {
         var entity = await _videoEditMongoDbRepository.GetByIdAsync(id, userId, cancellationToken);
-        var videoEdit = entity.ToDomain();
+        var videoEdit = entity?.ToDomain();
 
         return videoEdit;
     }

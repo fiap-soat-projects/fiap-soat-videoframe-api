@@ -12,6 +12,7 @@ public class VideoMongoDb : Document
     public string? Path { get; set; }
     public string? Name { get; set; }
     public string? ContentType { get; set; }
+    public long ContentLength { get; set; }
 
     public VideoMongoDb(Video video)
     {
@@ -19,5 +20,6 @@ public class VideoMongoDb : Document
         Path = video.Path;
         Name = video.Name;
         ContentType = video.ContentType;
+        ContentLength = video.ContentLength;
     }
 }

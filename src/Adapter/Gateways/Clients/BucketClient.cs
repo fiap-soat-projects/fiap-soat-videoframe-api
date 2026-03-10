@@ -22,25 +22,11 @@ internal class BucketClient : IBucketClient
 
     public async Task<string> UploadFileAsync(FileUpload file, CancellationToken cancellationToken)
     {
-        var fileNameWithExtension = string.Join('.', file.Name, GetFileExtensionString(file.Type));
+        var path = string.Format(PATH_TEMPLATE, file.UserId, file.Type.ToString(), file.Name);
 
-        var path = string.Format(PATH_TEMPLATE, file.UserId, file.Type.ToString(), fileNameWithExtension);
-
- 
-        await _s3BucketClient.UploadAsync(path, file.FileStream, cancellationToken);
-        
+        await _s3BucketClient.UploadAsync(path, file.FileStream, cancellationToken);    
 
         return path;
-    }
-
-    private static string GetFileExtensionString(FileType fileType)
-    {
-        return fileType switch 
-        { 
-            FileType.Video => "mp4",
-            FileType.VideoEdit => "zip",
-            _ => "bin"        
-        };
     }
 
     public Task<string> GetPreSignedDownloadUrlAsync(string filePath, CancellationToken cancellationToken)

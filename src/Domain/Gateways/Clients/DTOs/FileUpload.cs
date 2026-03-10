@@ -2,6 +2,6 @@
 
 namespace Domain.Gateways.Clients.DTOs;
 
-public record FileUpload(string UserId, string Name, FileType Type, Stream FileStream)
+public record FileUpload(string UserId, string Name, long Lentgh, string Type, Stream FileStream)
 {
 }

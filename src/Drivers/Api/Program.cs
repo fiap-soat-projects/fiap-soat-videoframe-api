@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Domain;
+using Adapter;
+using Infrastructure;
+using Scalar.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,28 +20,16 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-});
-
-AddJwtAuth(builder);
-
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<IUserContext, UserContext>();
+ConfigureDependencies(builder.Services);
 
 var app = builder.Build();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<FileTypeValidationMiddleware>();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
+app.MapOpenApi();
+app.MapScalarApiReference();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -45,7 +38,31 @@ app.MapControllers();
 
 app.Run();
 
-static void AddJwtAuth(WebApplicationBuilder builder)
+
+static void ConfigureDependencies(IServiceCollection services)
+{
+    //AddJwtAuth(services);
+    services.AddHttpContextAccessor();
+    services.AddScoped<IUserContext, UserContextMocked>();
+    //services.AddScoped<IUserContext, UserContext>();
+
+    services
+        .InjectDomainDependencies()
+        .InjectInfrastructureDependencies()
+        .InjectAdapterDependencies();
+
+    services
+        .AddEndpointsApiExplorer()
+        .AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+        });
+}
+
+static void AddJwtAuth(IServiceCollection services)
 {
 
     var region = StaticEnvironmentVariableProvider.CognitoRegion;
@@ -54,21 +71,21 @@ static void AddJwtAuth(WebApplicationBuilder builder)
 
     var cognitoUrl = $"https://cognito-idp.{region}.amazonaws.com/{userPoolId}";
 
-    builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.Authority = cognitoUrl;
-
-        options.TokenValidationParameters = new TokenValidationParameters
+    services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
         {
-            ValidateIssuer = true,
-            ValidIssuer = cognitoUrl,
+            options.Authority = cognitoUrl;
 
-            ValidateAudience = true,
-            ValidAudience = clientId,
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = cognitoUrl,
 
-            ValidateLifetime = true
-        };
-    });
+                ValidateAudience = true,
+                ValidAudience = clientId,
+
+                ValidateLifetime = true
+            };
+        });
 }

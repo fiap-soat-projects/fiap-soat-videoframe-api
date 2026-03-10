@@ -1,10 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using Amazon.S3;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Transfer;
 using Infrastructure.Clients.Interfaces;
 using Infrastructure.Providers;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace Infrastructure.Clients;
 
@@ -47,24 +48,22 @@ internal class S3BucketClient : IS3BucketClient
 
     public async Task UploadAsync(string path, Stream content, CancellationToken cancellationToken)
     {
-        using (content)
+        if (content == null) throw new ArgumentNullException(nameof(content));
+
+        if (content.CanSeek)
         {
-            if (content == null) throw new ArgumentNullException(nameof(content));
-
-            if (content.CanSeek)
-            {
-                content.Position = 0;
-            }
-
-            var putRequest = new PutObjectRequest
-            {
-                BucketName = _bucketName,
-                Key = path,
-                InputStream = content,
-                ContentType = "video/mp4"
-            };
-
-            await _client.PutObjectAsync(putRequest, cancellationToken).ConfigureAwait(false);
+            content.Position = 0;
         }
+        var transfer = new TransferUtility(_client);
+
+        var putRequest = new TransferUtilityUploadRequest
+        {
+            BucketName = _bucketName,
+            Key = path,
+            InputStream = content,
+            ContentType = "video/mp4",           
+        };
+
+        await transfer.UploadAsync(putRequest, cancellationToken);
     }
 }

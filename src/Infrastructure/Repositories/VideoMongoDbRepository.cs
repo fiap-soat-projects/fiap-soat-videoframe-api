@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories;
 
 internal class VideoMongoDbRepository : BaseMongoDbRepository<VideoMongoDb>, IVideoMongoDbRepository
 {
-    internal VideoMongoDbRepository(IMongoContext mongoContext) : base(mongoContext)
+    public VideoMongoDbRepository(IMongoContext mongoContext) : base(mongoContext)
     {
     }
 
@@ -37,6 +37,19 @@ internal class VideoMongoDbRepository : BaseMongoDbRepository<VideoMongoDb>, IVi
         var builder = new FilterDefinitionBuilder<VideoMongoDb>();
 
         var filter = builder.Eq(x => x.Id, id)
+            & builder.Eq(x => x.UserId, userId);
+
+        var cursor = await _mongoCollection.FindAsync(filter, new(), cancellationToken);
+        var video = await cursor.FirstOrDefaultAsync(cancellationToken);
+
+        return video;
+    }
+
+    public async Task<VideoMongoDb> GetByNameAsync(string name, string userId, CancellationToken cancellationToken)
+    {
+        var builder = new FilterDefinitionBuilder<VideoMongoDb>();
+
+        var filter = builder.Eq(x => x.Name, name)
             & builder.Eq(x => x.UserId, userId);
 
         var cursor = await _mongoCollection.FindAsync(filter, new(), cancellationToken);

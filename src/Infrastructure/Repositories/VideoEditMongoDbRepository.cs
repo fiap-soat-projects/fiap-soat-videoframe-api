@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories;
 
 internal class VideoEditMongoDbRepository : BaseMongoDbRepository<VideoEditMongoDb>, IVideoEditMongoDbRepository
 {
-    internal VideoEditMongoDbRepository(IMongoContext mongoContext) : base(mongoContext)
+    public VideoEditMongoDbRepository(IMongoContext mongoContext) : base(mongoContext)
     {
     }
 

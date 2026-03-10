@@ -12,10 +12,17 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "S3BucketBaseUrl": "",
-        "MongoDbConnectionString": "",
-        "KafkaConnectionString": "",
-        "AppName" : " "
+        "S3BucketBaseUrl": "http://localhost:9000",
+        "S3BucketUser": "admin",
+        "S3BucketPassword": "admin123",
+        "S3BucketName": "alison-teste",
+        "MongoDbConnectionString": "mongodb://admin:admin123@localhost:27017/videoframe?authSource=admin",
+        "KafkaConnectionString": "localhost:9092",
+        "KafkaProduceTopicName": "teste",
+        "CognitoRegion": "",
+        "CognitoUserPoolId": "",
+        "CognitoUserClientId": "",
+        "AppName": "VideoFrame.Api"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7021;http://localhost:5211"

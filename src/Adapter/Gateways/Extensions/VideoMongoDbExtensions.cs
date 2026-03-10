@@ -18,7 +18,8 @@ public static class VideoMongoDbExtensions
                 videoMongoDb.UserId!,
                 videoMongoDb.Path!,
                 videoMongoDb.Name!,
-                videoMongoDb.ContentType!
+                videoMongoDb.ContentType!,
+                videoMongoDb.ContentLength
             );
 
             return video;

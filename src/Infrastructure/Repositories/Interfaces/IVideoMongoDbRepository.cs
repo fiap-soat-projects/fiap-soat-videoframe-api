@@ -6,6 +6,7 @@ namespace Infrastructure.Repositories.Interfaces;
 public interface IVideoMongoDbRepository
 {
     Task<VideoMongoDb> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
+    Task<VideoMongoDb> GetByNameAsync(string name, string userId, CancellationToken cancellationToken);
     Task<PagedResult<VideoMongoDb>> GetAllAsync(
         string userId,
         int page,

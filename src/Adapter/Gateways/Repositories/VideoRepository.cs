@@ -30,10 +30,17 @@ internal class VideoRepository : IVideoRepository
 
     }
 
-    public async Task<Video> GetByIdAsync(string id, string userId, CancellationToken cancellationToken)
+    public async Task<Video?> GetByIdAsync(string id, string userId, CancellationToken cancellationToken)
     {
         var entity = await _videoMongoDbRepository.GetByIdAsync(id, userId, cancellationToken);
-        var video = entity.ToDomain();
+        var video = entity?.ToDomain();
+        return video;
+    }
+
+    public async Task<Video?> GetByNameAsync(string name, string userId, CancellationToken cancellationToken)
+    {
+        var entity = await _videoMongoDbRepository.GetByNameAsync(name, userId, cancellationToken);
+        var video = entity?.ToDomain();
         return video;
     }
 

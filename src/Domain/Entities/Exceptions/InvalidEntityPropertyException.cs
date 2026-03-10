@@ -40,6 +40,14 @@ public class InvalidEntityPropertyException<TEntity> : DomainException where TEn
         }
     }
 
+    public static void ThrowIfIsEqualOrLowerThanZero(long value, string propertyName)
+    {
+        if (value <= 0)
+        {
+            throw new InvalidEntityPropertyException<TEntity>(propertyName);
+        }
+    }
+
     public static void ThrowIfIsEqualOrLowerThanZero(int value, string propertyName)
     {
         if (value <= 0.00M)

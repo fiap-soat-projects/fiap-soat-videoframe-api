@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Api.Middlewares.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 
@@ -27,13 +28,17 @@ public class ErrorHandlingMiddleware
         {
             await _next(context);
         }
-        catch (Exception ex)
+        catch (UploadContentTypeException ex)
         {
-            const string DEFAULT_ERROR_MESSAGE = "An internal error occurs while trying to process the request";
-
             _logger.LogError(ex, "{Message}", ex.Message);
 
-            await HandleResponseAsync(context, ex, HttpStatusCode.InternalServerError, DEFAULT_ERROR_MESSAGE);
+            await HandleResponseAsync(context, ex, HttpStatusCode.UnsupportedMediaType);
+        }
+        catch (Exception ex)
+        { 
+            _logger.LogError(ex, "{Message}", ex.Message);
+
+            await HandleResponseAsync(context, ex, HttpStatusCode.InternalServerError);
         }
     }
 

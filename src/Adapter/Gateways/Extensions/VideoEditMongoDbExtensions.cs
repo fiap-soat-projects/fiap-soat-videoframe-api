@@ -14,7 +14,7 @@ public static class VideoEditMongoDbExtensions
         {
 
             var isEditTypeValid = Enum.TryParse<EditType>(videoEditMongoDb.Type, out var editType);
-            var isEditStatusValid = Enum.TryParse<EditStatus>(videoEditMongoDb.Type, out var editStatus);
+            var isEditStatusValid = Enum.TryParse<EditStatus>(videoEditMongoDb.Status, out var editStatus);
 
             if ((isEditTypeValid || isEditStatusValid) is false)
             {
@@ -29,7 +29,8 @@ public static class VideoEditMongoDbExtensions
                 videoEditMongoDb.Recipient!,
                 editType,
                 editStatus,
-                videoEditMongoDb.VideoId!
+                videoEditMongoDb.VideoId!,
+                videoEditMongoDb.EditPath!
             );
 
             return videoEdit;
