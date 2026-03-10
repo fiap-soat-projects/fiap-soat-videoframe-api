@@ -1,6 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using Api.Middlewares.Exceptions;
-using Api.Middlewares.Models;
+﻿using Api.Middlewares.Exceptions;
 using FileSignatures;
 using FileSignatures.Formats;
 using System.Buffers;
@@ -28,8 +26,8 @@ public class FileTypeValidationMiddleware
             await _next(context);
             return;
         }
-        
-        if(context.Request.ContentType != "video/mp4")
+
+        if (context.Request.ContentType != "video/mp4")
         {
             throw new UploadContentTypeException();
         }
@@ -42,12 +40,8 @@ public class FileTypeValidationMiddleware
         var header = buffer.Slice(0, Math.Min(32, buffer.Length));
         var headerBytes = header.ToArray();
 
-        var format = _inspector.DetermineFileFormat(new MemoryStream(headerBytes));
-
-        if (format == null)
-        {
-            throw new UploadContentTypeException();
-        }
+        var format = _inspector.DetermineFileFormat(new MemoryStream(headerBytes))
+            ?? throw new UploadContentTypeException();
 
         reader.AdvanceTo(buffer.Start);
 

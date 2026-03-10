@@ -5,6 +5,6 @@
   </Folder>
   <Folder Name="/src/Drivers/">
     <Project Path="src/Drivers/Api/Api.csproj" />
-    <Project Path="src/Infrastructure/Infrastructure.csproj" Id="c003af6d-e03c-4844-b8c0-7c8d8b5ed144" />
+    <Project Path="src/Drivers/Infrastructure/Infrastructure.csproj" />
   </Folder>
 </Solution>

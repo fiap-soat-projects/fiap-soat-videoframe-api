@@ -2,10 +2,6 @@
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Infrastructure.Clients.Interfaces;
-using Infrastructure.Providers;
-using System;
-using System.IO;
-using System.Threading;
 
 namespace Infrastructure.Clients;
 
@@ -30,7 +26,7 @@ internal class S3BucketClient : IS3BucketClient
 
         var response = await _client.GetObjectAsync(getRequest, cancellationToken).ConfigureAwait(false);
 
-        return response.ResponseStream; 
+        return response.ResponseStream;
     }
 
     public async Task<string> GetPreSignedDownloadUrlAsync(string path, CancellationToken cancellationToken)
@@ -61,7 +57,7 @@ internal class S3BucketClient : IS3BucketClient
             BucketName = _bucketName,
             Key = path,
             InputStream = content,
-            ContentType = "video/mp4",           
+            ContentType = "video/mp4",
         };
 
         await transfer.UploadAsync(putRequest, cancellationToken);

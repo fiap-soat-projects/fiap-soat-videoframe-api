@@ -21,7 +21,7 @@ public class Library : ControllerBase
     }
 
     [HttpPost]
-    [DisableRequestSizeLimit]
+    [RequestSizeLimit(10485760)]
     public async Task<IActionResult> UploadAsync(
         [FromHeader] string fileName,
         CancellationToken cancellationToken)

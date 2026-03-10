@@ -64,10 +64,8 @@ static void ConfigureDependencies(IServiceCollection services)
 
 static void AddJwtAuth(IServiceCollection services)
 {
-
     var region = StaticEnvironmentVariableProvider.CognitoRegion;
     var userPoolId = StaticEnvironmentVariableProvider.CognitoUserPoolId;
-    var clientId = StaticEnvironmentVariableProvider.CognitoClientId;
 
     var cognitoUrl = $"https://cognito-idp.{region}.amazonaws.com/{userPoolId}";
 
@@ -81,9 +79,6 @@ static void AddJwtAuth(IServiceCollection services)
             {
                 ValidateIssuer = true,
                 ValidIssuer = cognitoUrl,
-
-                ValidateAudience = true,
-                ValidAudience = clientId,
 
                 ValidateLifetime = true
             };

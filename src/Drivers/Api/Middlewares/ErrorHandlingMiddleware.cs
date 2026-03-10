@@ -34,6 +34,12 @@ public class ErrorHandlingMiddleware
 
             await HandleResponseAsync(context, ex, HttpStatusCode.UnsupportedMediaType);
         }
+        catch (BadHttpRequestException ex) when (ex.StatusCode == StatusCodes.Status413PayloadTooLarge)
+        {
+            _logger.LogWarning(ex, "Payload too large");
+            await HandleResponseAsync(context, ex, HttpStatusCode.RequestEntityTooLarge, ex.Message);
+            await Task.Delay(50);
+        }
         catch (Exception ex)
         { 
             _logger.LogError(ex, "{Message}", ex.Message);
@@ -42,7 +48,7 @@ public class ErrorHandlingMiddleware
         }
     }
 
-    private static async Task HandleResponseAsync(
+    private async Task HandleResponseAsync(
         HttpContext context,
         Exception ex,
         HttpStatusCode statusCode,
