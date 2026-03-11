@@ -18,6 +18,7 @@ internal class EditProcessorProducer : IEditProcessorProducer
     {
         var kafkaMessage = new KafkaProcessorMessage(
             message.EditId,
+            message.UserId,
             message.UserName,
             message.UserRecipient,
             message.VideoPath,
