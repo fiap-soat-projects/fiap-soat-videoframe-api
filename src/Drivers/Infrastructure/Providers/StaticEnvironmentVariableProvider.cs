@@ -9,9 +9,8 @@ public static class StaticEnvironmentVariableProvider
     private const string S3_BUCKET_USER = "S3BucketUser";
     private const string S3_BUCKET_PASSWORD = "S3BucketPassword";
     private const string S3_BUCKET_NAME = "S3BucketName";
-    private const string COGNITO_REGION = "CognitoRegion";
-    private const string COGNITO_USER_POOL_ID = "CognitoUserPoolId";
-    private const string COGNITO_CLIENT_ID = "CognitoUserClientId";
+    private const string COGNITO_REGION = "AWS_REGION";
+    private const string COGNITO_USER_POOL_ID = "AWS_USER_POOL_ID";
 
     internal static readonly string MongoDbConnectionString;
     internal static readonly string KafkaConnectionString;
@@ -22,7 +21,6 @@ public static class StaticEnvironmentVariableProvider
     internal static readonly string S3BucketName;
     public static readonly string CognitoRegion;
     public static readonly string CognitoUserPoolId;
-    public static readonly string CognitoClientId;
 
     static StaticEnvironmentVariableProvider()
     {
@@ -34,7 +32,6 @@ public static class StaticEnvironmentVariableProvider
         S3BucketPassword = GetRequiredEnvironmentVariable(S3_BUCKET_PASSWORD);
         CognitoRegion = GetRequiredEnvironmentVariable(COGNITO_REGION);
         CognitoUserPoolId = GetRequiredEnvironmentVariable(COGNITO_USER_POOL_ID);
-        // CognitoClientId = GetRequiredEnvironmentVariable(COGNITO_CLIENT_ID);
         S3BucketName = GetRequiredEnvironmentVariable(S3_BUCKET_NAME);
     }
 
