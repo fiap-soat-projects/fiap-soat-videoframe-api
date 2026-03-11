@@ -6,7 +6,7 @@ namespace Adapter.Controllers.Interfaces;
 
 public interface IVideoEditController
 {
-    Task<string> CreateAsync(
+    Task<CreatePresenter> CreateAsync(
         CreateVideoEditRequest createEditionRequest,
         UserRequest userRequest, 
         CancellationToken cancellationToken);

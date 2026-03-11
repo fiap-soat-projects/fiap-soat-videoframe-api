@@ -34,7 +34,7 @@ public class Library : ControllerBase
 
         var presenter = await _videoController.UploadAsync(req, userRequest, cancellationToken);
 
-        return Ok(presenter.Id);
+        return Ok(presenter.ViewModel);
     }
 
 

@@ -2,11 +2,11 @@
 
 namespace Adapter.Presenters;
 
-public class UploadPresenter
+public class CreatePresenter
 {
     public CreateResponse ViewModel { get; init; }
 
-    public UploadPresenter(string id)
+    public CreatePresenter(string id)
     {
         ViewModel = new CreateResponse(id);
     }

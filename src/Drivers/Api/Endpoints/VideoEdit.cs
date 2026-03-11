@@ -40,9 +40,9 @@ public class VideoEdit : ControllerBase
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
 
-        var id = await _videoEditController.CreateAsync(req, userRequest, cancellationToken);
+        var presenter = await _videoEditController.CreateAsync(req, userRequest, cancellationToken);
 
-        return Ok(id);
+        return Ok(presenter.ViewModel);
     }
 
 

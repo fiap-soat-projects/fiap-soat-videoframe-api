@@ -18,7 +18,7 @@ internal class VideoEditController : IVideoEditController
         _videoUseCase = videoUseCase;
     }
 
-    public async Task<string> CreateAsync(CreateVideoEditRequest createvideoEditRequest, UserRequest userRequest, CancellationToken cancellationToken)
+    public async Task<CreatePresenter> CreateAsync(CreateVideoEditRequest createvideoEditRequest, UserRequest userRequest, CancellationToken cancellationToken)
     {
         var notificationTargets = createvideoEditRequest
             .NotificationTargets
@@ -33,7 +33,7 @@ internal class VideoEditController : IVideoEditController
             notificationTargets);
 
         var id = await _videoEditUseCase.CreateAsync(videoEdit, cancellationToken);
-        return id;
+        return new CreatePresenter(id);
     }
 
     public async Task<DownloadPresenter> DownloadAsync(string id, UserRequest userRequest, CancellationToken cancellationToken)
