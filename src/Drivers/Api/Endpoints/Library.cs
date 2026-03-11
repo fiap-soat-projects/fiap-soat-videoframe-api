@@ -46,7 +46,7 @@ public class Library : ControllerBase
 
         var presenter = await _videoController.GetLinkAsync(id, userRequest, cancellationToken);
 
-        return Ok(presenter);
+        return Ok(presenter.ViewModel);
     }
 
     [Authorize]

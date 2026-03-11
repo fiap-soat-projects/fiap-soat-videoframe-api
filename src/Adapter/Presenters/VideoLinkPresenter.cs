@@ -1,11 +1,13 @@
-﻿namespace Adapter.Presenters;
+﻿using Adapter.Presenters.DTOs;
+
+namespace Adapter.Presenters;
 
 public class VideoLinkPresenter
 {
-    public string Link { get; init; }
+    public DownloadLinkResponse ViewModel { get; init; }
 
     public VideoLinkPresenter(string link)
     {
-        Link = link;
+        ViewModel = new DownloadLinkResponse(link);
     }
 }
