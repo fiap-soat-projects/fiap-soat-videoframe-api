@@ -21,7 +21,8 @@ internal class EditProcessorProducer : IEditProcessorProducer
             message.UserName,
             message.UserRecipient,
             message.VideoPath,
-            message.EditType.ToString());
+            message.EditType.ToString(),
+            message.NotificationTarget);
 
         await _kafkaProcessorProducer.ProduceAsync(kafkaMessage, cancellationToken);
     }

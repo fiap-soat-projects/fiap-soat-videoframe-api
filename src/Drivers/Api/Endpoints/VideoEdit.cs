@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints;
 
-//[Authorize]
 [ApiController]
 [Route("v1/user/videos/edits")]
 public class VideoEdit : ControllerBase

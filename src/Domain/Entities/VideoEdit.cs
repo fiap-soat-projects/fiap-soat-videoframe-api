@@ -40,6 +40,7 @@ public class VideoEdit : IDomainEntity
 
     public EditType Type { get; set; }
     public EditStatus Status { get; set; }
+    public IEnumerable<NotificationTarget> NotificationTargets { get; set; }
 
     public string? VideoId
     {
@@ -54,14 +55,15 @@ public class VideoEdit : IDomainEntity
     public string? EditPath { get; set; }
 
     public VideoEdit(
-        string? id, 
+        string? id,
         DateTime createdAt,
-        string userId, 
+        string userId,
         string recipient,
         EditType type,
         EditStatus status,
         string videoId,
-        string editPath)
+        string editPath,
+        IEnumerable<NotificationTarget> notificationTarget)
     {
         Id = id;
         CreatedAt = createdAt;
@@ -71,14 +73,22 @@ public class VideoEdit : IDomainEntity
         Status = status;
         VideoId = videoId;
         EditPath = editPath;
+        NotificationTargets = notificationTarget;
     }
 
-    public VideoEdit(string userId, string recipient, EditType type, EditStatus status, string videoId)
+    public VideoEdit(
+        string userId,
+        string recipient,
+        EditType type,
+        EditStatus status,
+        string videoId,
+        IEnumerable<NotificationTarget> notificationTarget)
     {
         UserId = userId;
         Recipient = recipient;
         Type = type;
         Status = status;
         VideoId = videoId;
+        NotificationTargets = notificationTarget;
     }
 }

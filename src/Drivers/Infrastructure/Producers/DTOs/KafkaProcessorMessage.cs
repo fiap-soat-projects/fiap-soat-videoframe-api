@@ -1,5 +1,7 @@
-﻿namespace Infrastructure.Producers.DTOs;
+﻿using Domain.Entities;
 
-public record KafkaProcessorMessage(string UserId, string UserName, string UserRecipient, string VideoPath, string EditType)
+namespace Infrastructure.Producers.DTOs;
+
+public record KafkaProcessorMessage(string UserId, string UserName, string UserRecipient, string VideoPath, string EditType, IEnumerable<NotificationTarget> NotificationTargets)
 {
 }

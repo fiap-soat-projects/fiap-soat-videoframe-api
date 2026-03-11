@@ -74,13 +74,22 @@ internal class VideoEditUseCase : IVideoEditUseCase
             throw new Exception("This edit is already started");
         }
 
+        var notificationTargets = videoEdit.NotificationTargets;
+
+        if (!notificationTargets.Any())
+        {
+            notificationTargets = notificationTargets
+                .Append(new NotificationTarget(NotificationChannel.Email, user.Email));
+        }
+
         var message = new EditProcessorMessage(
             videoEdit.Id!, 
             user.Id!, 
             user.Name!, 
             user.Email,
             video.Path!,
-            videoEdit.Type);
+            videoEdit.Type,
+            notificationTargets);
 
         await _editProcessorProducer.ProduceAsync(message, cancellationToken);
     }

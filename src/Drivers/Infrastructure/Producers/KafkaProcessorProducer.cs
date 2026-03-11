@@ -3,6 +3,7 @@ using Infrastructure.Producers.DTOs;
 using Infrastructure.Producers.Interfaces;
 using Infrastructure.Providers;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Infrastructure.Producers;
 
@@ -10,18 +11,29 @@ public class KafkaProcessorProducer : IKafkaProcessorProducer
 {
     private readonly IProducer<Null, string> _producer;
     private readonly string _topicName;
+    private readonly JsonSerializerOptions _options;
 
     public KafkaProcessorProducer(IProducer<Null, string> producer)
     {
         _producer = producer;
         _topicName = StaticEnvironmentVariableProvider.KafkaProduceTopicName;
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        };
+
+        options.Converters.Add(new JsonStringEnumConverter());
+
+        _options = options;
     }
 
     public async Task ProduceAsync(KafkaProcessorMessage message, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        var payload = JsonSerializer.Serialize(message);
+        var payload = JsonSerializer.Serialize(message, _options);
 
         var result = await _producer.ProduceAsync(
             _topicName,

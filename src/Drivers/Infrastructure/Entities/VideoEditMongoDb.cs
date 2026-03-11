@@ -13,6 +13,7 @@ public class VideoEditMongoDb : Document
     public string? Status { get; set; }
     public string? VideoId { get; set; }
     public string? EditPath { get; set; }
+    public IEnumerable<NotificationTargetMongoDb> NotificationTargets { get; set; }
 
     public VideoEditMongoDb(VideoEdit videoEdit)
     {
@@ -22,5 +23,6 @@ public class VideoEditMongoDb : Document
         Status = videoEdit.Status.ToString();
         VideoId = videoEdit.VideoId;
         EditPath = videoEdit.EditPath;
+        NotificationTargets = videoEdit.NotificationTargets.Select(x => new NotificationTargetMongoDb(x));
     }
 }

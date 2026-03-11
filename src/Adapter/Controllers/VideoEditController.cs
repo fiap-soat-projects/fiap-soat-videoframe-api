@@ -18,14 +18,19 @@ internal class VideoEditController : IVideoEditController
         _videoUseCase = videoUseCase;
     }
 
-    public async Task<string> CreateAsync(CreateVideoEditRequest createEditionRequest, UserRequest userRequest, CancellationToken cancellationToken)
+    public async Task<string> CreateAsync(CreateVideoEditRequest createvideoEditRequest, UserRequest userRequest, CancellationToken cancellationToken)
     {
+        var notificationTargets = createvideoEditRequest
+            .NotificationTargets
+            .Select(x => new NotificationTarget(x.Channel, x.Target));
+
         var videoEdit = new VideoEdit(
             userRequest.Id, 
             userRequest.Recipient, 
-            createEditionRequest.Type,
+            createvideoEditRequest.Type,
             EditStatus.Created,
-            createEditionRequest.VideoId);
+            createvideoEditRequest.VideoId,
+            notificationTargets);
 
         var id = await _videoEditUseCase.CreateAsync(videoEdit, cancellationToken);
         return id;

@@ -30,7 +30,8 @@ public static class VideoEditMongoDbExtensions
                 editType,
                 editStatus,
                 videoEditMongoDb.VideoId!,
-                videoEditMongoDb.EditPath!
+                videoEditMongoDb.EditPath!,
+                videoEditMongoDb.NotificationTargets.Select(x => x.ToDomain())
             );
 
             return videoEdit;
