@@ -10,6 +10,7 @@ using Domain;
 using Adapter;
 using Infrastructure;
 using Scalar.AspNetCore;
+using Api.Authentication.Factories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,7 @@ app.MapOpenApi();
 app.MapScalarApiReference();
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -41,10 +43,10 @@ app.Run();
 
 static void ConfigureDependencies(IServiceCollection services)
 {
-    //AddJwtAuth(services);
+    AddJwtAuth(services);
     services.AddHttpContextAccessor();
-    services.AddScoped<IUserContext, UserContextMocked>();
-    //services.AddScoped<IUserContext, UserContext>();
+    //services.AddScoped<IUserContext, UserContextMocked>();
+    services.AddScoped(UserContextFactory.Create);
 
     services
         .InjectDomainDependencies()
@@ -77,10 +79,7 @@ static void AddJwtAuth(IServiceCollection services)
 
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidIssuer = cognitoUrl,
-
-                ValidateLifetime = true
+                ValidateAudience = false
             };
         });
 }

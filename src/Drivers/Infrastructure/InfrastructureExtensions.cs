@@ -1,4 +1,5 @@
-﻿using Amazon.S3;
+﻿using Amazon.CognitoIdentityProvider;
+using Amazon.S3;
 using Confluent.Kafka;
 using Infrastructure.Clients;
 using Infrastructure.Clients.Interfaces;
@@ -27,7 +28,8 @@ public static class InfrastructureExtensions
             .RegisterMongoDbRepositories()
             .RegisterConnections()
             .RegisterClients()
-            .RegisterProducers();
+            .RegisterProducers()
+            .RegisterCognitoClient();
 
         MongoGlobalOptions.Init();
 
@@ -42,6 +44,18 @@ public static class InfrastructureExtensions
 
         return services;
     }
+
+    public static IServiceCollection RegisterCognitoClient(this IServiceCollection services)
+    {
+        var cognitoClient = new AmazonCognitoIdentityProviderClient();
+
+        services
+            .AddSingleton(cognitoClient)
+            .AddSingleton<ICognitoClient, CognitoClient>();
+
+        return services;
+    }
+
 
     private static IServiceCollection RegisterConnections(this IServiceCollection services)
     {

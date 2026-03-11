@@ -21,6 +21,7 @@ public class VideoEdit : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetPaginatedAsync(
         [FromQuery] PaginationRequest paginationRequest,
         CancellationToken cancellationToken)
@@ -33,6 +34,7 @@ public class VideoEdit : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAsync(
         [FromBody] CreateVideoEditRequest req,
         CancellationToken cancellationToken)
@@ -46,6 +48,7 @@ public class VideoEdit : ControllerBase
 
 
     [HttpPost("{id}/start")]
+    [Authorize]
     public async Task<IActionResult> StartAsync(
         [FromRoute] string id,
         CancellationToken cancellationToken)
@@ -63,7 +66,7 @@ public class VideoEdit : ControllerBase
         [FromBody] UpdateEditionStatusRequest req,
         CancellationToken cancellationToken)
     {
-        var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
+        var userRequest = new UserRequest(req.userId, _userContext.Name, _userContext.Email);
 
         await _videoEditController.UpdateStatusAsync(id, req.Status, userRequest, cancellationToken);
 
@@ -71,6 +74,7 @@ public class VideoEdit : ControllerBase
     }
 
     [HttpGet("{id}/download")]
+    [Authorize]
     public async Task DownloadAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);

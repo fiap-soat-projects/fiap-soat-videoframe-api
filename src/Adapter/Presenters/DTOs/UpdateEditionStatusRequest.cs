@@ -2,6 +2,6 @@
 
 namespace Adapter.Presenters.DTOs;
 
-public record UpdateEditionStatusRequest(EditStatus Status)
+public record UpdateEditionStatusRequest(string userId, EditStatus Status)
 {
 }

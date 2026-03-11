@@ -32,8 +32,8 @@ public static class StaticEnvironmentVariableProvider
         S3BucketBaseUrl = GetRequiredEnvironmentVariable(S3_BUCKET_BASE_URL);
         S3BucketUser = GetRequiredEnvironmentVariable(S3_BUCKET_USER);
         S3BucketPassword = GetRequiredEnvironmentVariable(S3_BUCKET_PASSWORD);
-        // CognitoRegion = GetRequiredEnvironmentVariable(COGNITO_REGION);
-        // CognitoUserPoolId = GetRequiredEnvironmentVariable(COGNITO_USER_POOL_ID);
+        CognitoRegion = GetRequiredEnvironmentVariable(COGNITO_REGION);
+        CognitoUserPoolId = GetRequiredEnvironmentVariable(COGNITO_USER_POOL_ID);
         // CognitoClientId = GetRequiredEnvironmentVariable(COGNITO_CLIENT_ID);
         S3BucketName = GetRequiredEnvironmentVariable(S3_BUCKET_NAME);
     }

@@ -1,19 +1,10 @@
-﻿using Api.Authentication.Extensions;
-using Api.Authentication.Interfaces;
-using System.Security.Claims;
+﻿using Api.Authentication.Interfaces;
 
 namespace Api.Authentication;
 
-public class UserContext : IUserContext
+public class UserContext(string id, string name, string email) : IUserContext
 {
-    public string Id { get; init; }
-    public string Name { get; init; }
-    public string Email { get; init; }
-
-    public UserContext(IHttpContextAccessor context)
-    {
-        Id = context.GetRequiredUserClaim("userId");
-        Name = context.GetRequiredUserClaim("name");
-        Email = context.GetRequiredUserClaim(ClaimTypes.Email);
-    }
+    public string Id { get; init; } = id;
+    public string Name { get; init; } = name;
+    public string Email { get; init; } = email;
 }

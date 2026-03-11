@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints;
 
-//[Authorize]
 [ApiController]
 [Route("v1/user/videos")]
 public class Library : ControllerBase
@@ -20,6 +19,7 @@ public class Library : ControllerBase
         _videoController = videoController;
     }
 
+    [Authorize]
     [HttpPost]
     [RequestSizeLimit(10485760)]
     public async Task<IActionResult> UploadAsync(
@@ -37,8 +37,9 @@ public class Library : ControllerBase
         return Ok(presenter.Id);
     }
 
-    [HttpGet]
-    [Route("{id}/link")]
+
+    [Authorize]
+    [HttpGet("{id}/link")]
     public async Task<IActionResult> GetLinkAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
@@ -48,8 +49,8 @@ public class Library : ControllerBase
         return Ok(presenter);
     }
 
-    [HttpGet]
-    [Route("{id}/download")]
+    [Authorize]
+    [HttpGet("{id}/download")]
     public async Task DownloadAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
@@ -67,6 +68,7 @@ public class Library : ControllerBase
             .CopyToAsync(Response.Body, cancellationToken); 
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetPaginatedAsync(
         [FromQuery] PaginationRequest paginationRequest,
@@ -79,8 +81,8 @@ public class Library : ControllerBase
         return Ok(presenter.ViewModel);
     }
 
-    [HttpGet]
-    [Route("{id}")]
+    [Authorize]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);
