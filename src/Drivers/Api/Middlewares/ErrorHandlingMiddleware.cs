@@ -1,4 +1,5 @@
 ﻿using Api.Middlewares.Exceptions;
+using Domain.Entities.Exceptions;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
@@ -39,6 +40,12 @@ public class ErrorHandlingMiddleware
             _logger.LogWarning(ex, "Payload too large");
             await HandleResponseAsync(context, ex, HttpStatusCode.RequestEntityTooLarge, ex.Message);
             await Task.Delay(50);
+        }
+        catch(DomainException ex)
+        {
+            _logger.LogError(ex, "{Message}", ex.Message);
+
+            await HandleResponseAsync(context, ex, HttpStatusCode.UnprocessableContent);
         }
         catch (Exception ex)
         { 
