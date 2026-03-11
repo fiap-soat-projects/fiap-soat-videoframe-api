@@ -1,0 +1,19 @@
+﻿using Domain.Entities;
+using Domain.Entities.Enums;
+using Domain.Entities.Page;
+
+namespace Domain.Gateways.Repositories.Interfaces;
+
+public interface IVideoEditRepository
+{
+    Task<VideoEdit?> GetByIdAsync(string id, string userId, CancellationToken cancellationToken);
+    Task<Pagination<VideoEdit>> GetPaginatedAsync(
+        string userId,
+        int page,
+        int size,
+        CancellationToken cancellationToken);
+
+    Task<string> InsertOneAsync(VideoEdit videoEdit, CancellationToken cancellationToken);
+    Task UpdateStatusAsync(string id, string userId, EditStatus status, CancellationToken cancellationToken);
+    Task DeleteAsync(string id, string userId, CancellationToken cancellationToken);
+}

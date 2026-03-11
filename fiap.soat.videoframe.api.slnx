@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/SolutionItems/">
+    <File Path=".env" />
+    <File Path=".gitignore" />
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Adapter/Adapter.csproj" Id="faed1d24-601e-41ea-9d92-67ad5cf8ee52" />
+    <Project Path="src/Domain/Domain.csproj" Id="de17368f-3180-479a-8938-27f21f262a3e" />
+  </Folder>
+  <Folder Name="/src/Drivers/">
+    <Project Path="src/Drivers/Api/Api.csproj" />
+    <Project Path="src/Drivers/Infrastructure/Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/UnitTests/">
+    <Project Path="tests/UnitTests/UnitTests.csproj" Id="74939cac-39b6-4dc4-a6f2-f6ce73e7b306" />
+  </Folder>
+</Solution>
