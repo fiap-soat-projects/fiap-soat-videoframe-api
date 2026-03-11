@@ -1,6 +1,6 @@
-﻿using Business.Entities.Page;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Entities.Enums;
+using Domain.Entities.Page;
 
 namespace Domain.UseCases.Interfaces;
 

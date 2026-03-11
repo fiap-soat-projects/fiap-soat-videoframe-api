@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Business.Entities.Page;
+namespace Domain.Entities.Page;
 
 [ExcludeFromCodeCoverage]
 public class Pagination<T>

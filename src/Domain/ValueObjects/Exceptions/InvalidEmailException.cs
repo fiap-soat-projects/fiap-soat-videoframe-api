@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.Exceptions;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Business.ValueObjects.Exceptions;
+namespace Domain.ValueObjects.Exceptions;
 
 [ExcludeFromCodeCoverage]
 public class InvalidEmailException : DomainException

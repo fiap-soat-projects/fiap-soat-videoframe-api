@@ -1,6 +1,6 @@
 ﻿using Adapter.Presenters.DTOs;
-using Business.Entities.Page;
 using Domain.Entities;
+using Domain.Entities.Page;
 
 namespace Adapter.Presenters;
 

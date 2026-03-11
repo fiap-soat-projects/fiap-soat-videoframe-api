@@ -1,5 +1,5 @@
-﻿using Business.Entities.Page;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Entities.Page;
 
 namespace Domain.Gateways.Repositories.Interfaces;
 

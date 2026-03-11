@@ -1,7 +1,7 @@
 ﻿using Adapter.Gateways.Extensions;
-using Business.Entities.Page;
 using Domain.Entities;
 using Domain.Entities.Enums;
+using Domain.Entities.Page;
 using Domain.Gateways.Repositories.Interfaces;
 using Infrastructure.Entities;
 using Infrastructure.Repositories.Interfaces;

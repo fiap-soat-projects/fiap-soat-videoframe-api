@@ -1,5 +1,5 @@
-﻿using Business.Entities.Page;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Entities.Page;
 using Domain.Gateways.Clients.DTOs;
 
 namespace Domain.UseCases.Interfaces;

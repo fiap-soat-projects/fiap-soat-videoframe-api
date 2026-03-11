@@ -1,5 +1,5 @@
-﻿using Business.Entities.Page;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Entities.Page;
 using Infrastructure.Entities;
 using Infrastructure.Entities.Page;
 

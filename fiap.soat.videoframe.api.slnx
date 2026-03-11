@@ -14,4 +14,8 @@
     <Project Path="src/Drivers/Api/Api.csproj" />
     <Project Path="src/Drivers/Infrastructure/Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/UnitTests/">
+    <Project Path="tests/UnitTests/UnitTests.csproj" Id="74939cac-39b6-4dc4-a6f2-f6ce73e7b306" />
+  </Folder>
 </Solution>
