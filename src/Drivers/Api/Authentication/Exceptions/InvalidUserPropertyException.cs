@@ -2,7 +2,7 @@
 
 public class InvalidUserPropertyException : Exception
 {
-    private const string DEFAULT_MESSAGE = "Has invalid user property defined in jwt token";
+    private const string DEFAULT_MESSAGE = "Invalid user properties";
 
     public string PropertyName { get; init; }
 

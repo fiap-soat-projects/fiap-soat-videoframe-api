@@ -1,22 +1,20 @@
-using Api.Authentication;
-using Api.Authentication.Interfaces;
+using Adapter;
+using Api.Authentication.Factories;
 using Api.Middlewares;
+using Domain;
+using Infrastructure;
 using Infrastructure.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Domain;
-using Adapter;
-using Infrastructure;
-using Scalar.AspNetCore;
-using Api.Authentication.Factories;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
- 
+
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

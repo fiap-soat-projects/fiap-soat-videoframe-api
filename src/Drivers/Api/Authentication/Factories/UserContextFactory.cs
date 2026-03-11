@@ -1,4 +1,5 @@
-﻿using Api.Authentication.Interfaces;
+﻿using Api.Authentication.Exceptions;
+using Api.Authentication.Interfaces;
 using Infrastructure.Clients.Interfaces;
 
 namespace Api.Authentication.Factories;
@@ -25,9 +26,26 @@ public static class UserContextFactory
 
         var cognitoUser = client!.GetUserAsync(token!, CancellationToken.None).GetAwaiter().GetResult();
 
-        return new UserContext(
-            cognitoUser.Id ?? string.Empty,
-            cognitoUser.Name ?? string.Empty,
-            cognitoUser.Email ?? string.Empty);
+        ValidateUserProperties(cognitoUser);
+
+        return new UserContext(cognitoUser.Id!, cognitoUser.Name!, cognitoUser.Email!);
+    }
+
+    private static void ValidateUserProperties(Infrastructure.Clients.DTOs.CognitoUser cognitoUser)
+    {
+        if (string.IsNullOrEmpty(cognitoUser.Id))
+        {
+            throw new InvalidUserPropertyException(nameof(cognitoUser.Id));
+        }
+
+        if (string.IsNullOrEmpty(cognitoUser.Name))
+        {
+            throw new InvalidUserPropertyException(nameof(cognitoUser.Id));
+        }
+
+        if (string.IsNullOrEmpty(cognitoUser.Email))
+        {
+            throw new InvalidUserPropertyException(nameof(cognitoUser.Id));
+        }
     }
 }
