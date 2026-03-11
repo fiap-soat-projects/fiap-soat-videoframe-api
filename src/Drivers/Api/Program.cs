@@ -6,7 +6,9 @@ using Infrastructure;
 using Infrastructure.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Prometheus;
 using Scalar.AspNetCore;
+using Serilog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -20,12 +22,15 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 ConfigureDependencies(builder.Services);
+builder.Host.UseSerilog((context, loggerConfiguration) => loggerConfiguration.WriteTo.Console());
 
 var app = builder.Build();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<FileTypeValidationMiddleware>();
 
+app.UseMetricServer();
+app.UseHttpMetrics();
 
 app.MapOpenApi();
 app.MapScalarApiReference();
