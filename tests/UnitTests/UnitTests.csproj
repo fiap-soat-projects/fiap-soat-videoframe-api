@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Adapter\Adapter.csproj" />
     <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
