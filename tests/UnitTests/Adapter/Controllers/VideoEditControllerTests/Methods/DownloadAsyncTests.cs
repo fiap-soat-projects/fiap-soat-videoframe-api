@@ -137,7 +137,7 @@ public class DownloadAsyncTests : VideoEditControllerDependenciesMock
         var id = "edit-123";
         var userId = "user-123";
         var userRequest = new UserRequest(userId, "John Doe", "recipient@example.com");
-        var editPath = "/edits/edit-123.zip";
+        var editPath = $"users/{userId}/Frame/{id}.zip";
         var expectedException = new IOException("Download failed");
 
         var videoEdit = new VideoEdit(
