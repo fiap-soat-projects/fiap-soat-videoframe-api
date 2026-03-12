@@ -8,12 +8,12 @@ namespace Api.Endpoints;
 
 [ApiController]
 [Route("v1/user/videos")]
-public class Library : ControllerBase
+public class Video : ControllerBase
 {
     private readonly IUserContext _userContext;
     private readonly IVideoController _videoController;
 
-    public Library(IUserContext userContext, IVideoController videoController)
+    public Video(IUserContext userContext, IVideoController videoController)
     {
         _userContext = userContext;
         _videoController = videoController;
@@ -21,13 +21,12 @@ public class Library : ControllerBase
 
     [Authorize]
     [HttpPost]
-    [RequestSizeLimit(10485760)]
+    [DisableRequestSizeLimit]
+    //[RequestSizeLimit(10485760)]
     public async Task<IActionResult> UploadAsync(
         [FromHeader] string fileName,
         CancellationToken cancellationToken)
     {
-        Console.WriteLine($"ContentLength: {Request.ContentLength}");
-
         var req = new UploadVideoRequest(fileName, Request.ContentType!, Request.ContentLength ?? -1, Request.Body);
 
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);

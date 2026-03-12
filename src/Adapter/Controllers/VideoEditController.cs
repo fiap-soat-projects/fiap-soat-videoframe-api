@@ -30,7 +30,7 @@ internal class VideoEditController : IVideoEditController
             createvideoEditRequest.Type,
             EditStatus.Created,
             createvideoEditRequest.VideoId,
-            notificationTargets);
+            notificationTargets);        
 
         var id = await _videoEditUseCase.CreateAsync(videoEdit, cancellationToken);
         return new CreatePresenter(id);
@@ -44,6 +44,8 @@ internal class VideoEditController : IVideoEditController
         {
             throw new Exception("This edit is not processed");
         }
+
+        videoEdit.EditPath = $"users/{userRequest.Id}/{videoEdit.Type}/{videoEdit.Id}.zip";
 
         var fileStream = await _videoEditUseCase.DownloadAsync(videoEdit.EditPath!, cancellationToken);
 
