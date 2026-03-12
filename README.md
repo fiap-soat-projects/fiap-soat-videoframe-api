@@ -1,116 +1,142 @@
-# fiap-soat-videoframe-api
+# 🎬 VideoFrame API
 
-Objetivo
-- API para upload, gerenciamento e edição de vídeos com extração/serviço de download de arquivos. Destinada ao projeto FIAP SOAT; usa autenticação JWT (Cognito) e a lib Scalar para exposição da referência de API (em vez do Swagger).
+Este repositório contém a API de upload e edição de vídeos desenvolvida para o hackathon FIAP SOAT. O serviço expõe endpoints para upload, gerenciamento e processamento de vídeos (ex.: extração de frames), além de download dos resultados editados. Utiliza autenticação JWT via AWS Cognito e arquitetura orientada a eventos com Kafka.
 
-Como executar
-- Requisitos: .NET 10 SDK
-- Exemplo:
-  dotnet restore
-  dotnet build
-  dotnet run --project src/Drivers/Api
+## 🏃 Integrantes do grupo
 
-Autenticação
-- JWT Bearer (Cognito). Enviar header:
-  Authorization: Bearer <token>
+- **Jeferson dos Santos Gomes** - RM 362669
+- **Jamison dos Santos Gomes** - RM 362671
+- **Alison da Silva Cruz** - RM 362628
 
-Middlewares relevantes
-- `ErrorHandlingMiddleware` — tratamento centralizado de erros.
-- `FileTypeValidationMiddleware` — validação do tipo de arquivo em uploads.
-- `RequestSizeLimit(10485760)` aplicado no endpoint de upload (10 MB).
+## 👨‍💻 Tecnologias Utilizadas
 
-Endpoints (extraídos do código)
-- Base comum: v1/user/videos
+- **.NET 10 (C# 14)** – API construída com ASP.NET Core
+- **MongoDB** – banco de dados NoSQL para persistência de vídeos e edições
+- **AWS S3 / MinIO** – armazenamento de objetos (vídeos e arquivos editados)
+- **Apache Kafka** – mensageria para processamento assíncrono de edições
+- **AWS Cognito** – autenticação e autorização via JWT
+- **Docker & Docker Compose** – containerização e orquestração local
+- **Prometheus** – métricas
+- **Serilog** – logging estruturado
+- **Scalar (documentação)** – para explorar e testar endpoints (substituto do Swagger)
 
-1) Upload de vídeo
-- Método: POST
-- Rota: `POST /v1/user/videos`
-- Autorização: Obrigatória
-- Headers:
-  - `fileName` (nome do arquivo)
-  - `Content-Type` (tipo do arquivo, enviado pelo cliente)
-- Body: Stream bruto do arquivo (conteúdo do request)
-- Observações:
-  - Limite configurado: 10 MB.
-  - Retorna `200 OK` com o `id` do vídeo (string) no corpo.
+## 🔌 Endpoints Disponíveis
 
-Exemplo (curl):
-curl -X POST "https://{host}/v1/user/videos" \
-  -H "Authorization: Bearer <token>" \
-  -H "fileName: exemplo.mp4" \
-  -H "Content-Type: video/mp4" \
-  --data-binary @exemplo.mp4
+### 🎥 Vídeos (`/v1/user/videos`)
 
-2) Obter link do vídeo
-- Método: GET
-- Rota: `GET /v1/user/videos/{id}/link`
-- Autorização: Obrigatória
-- Retorno: JSON com link ou dados apresentados pelo presenter.
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| `POST` | `/v1/user/videos` | Upload de um novo vídeo (stream no body, `fileName` via header) |
+| `GET` | `/v1/user/videos` | Listagem paginada de vídeos do usuário |
+| `GET` | `/v1/user/videos/{id}` | Obtém metadados de um vídeo por ID |
+| `GET` | `/v1/user/videos/{id}/link` | Obtém link de acesso ao vídeo |
+| `GET` | `/v1/user/videos/{id}/download` | Download do arquivo de vídeo |
 
-3) Download de vídeo (arquivo)
-- Método: GET
-- Rota: `GET /v1/user/videos/{id}/download`
-- Autorização: Obrigatória
-- Comportamento: Stream do arquivo com `Content-Type` e `Content-Disposition` definidos; arquivo enviado como attachment.
+### ✂️ Edições de Vídeo (`/v1/user/videos/edits`)
 
-Exemplo (curl):
-curl -X GET "https://{host}/v1/user/videos/{id}/download" \
-  -H "Authorization: Bearer <token>" -o video.mp4
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| `GET` | `/v1/user/videos/edits` | Listagem paginada de edições do usuário |
+| `POST` | `/v1/user/videos/edits` | Cria uma nova edição de vídeo |
+| `POST` | `/v1/user/videos/edits/{id}/start` | Inicia o processamento da edição |
+| `PATCH` | `/v1/user/videos/edits/{id}/status` | Atualiza o status da edição (uso interno) |
+| `GET` | `/v1/user/videos/edits/{id}/download` | Download do resultado da edição |
 
-4) Listagem paginada de vídeos
-- Método: GET
-- Rota: `GET /v1/user/videos`
-- Autorização: Obrigatória
-- Query: parâmetros de paginação via `PaginationRequest` (query string)
-- Retorno: ViewModel com paginação.
+> **Nota:** Todos os endpoints exigem autenticação JWT (`Authorization: Bearer <token>`), exceto o `PATCH` de status que é de uso interno.
 
-5) Recuperar vídeo por id (metadados)
-- Método: GET
-- Rota: `GET /v1/user/videos/{id}`
-- Autorização: Obrigatória
-- Retorno: ViewModel com dados do vídeo.
+## 🌐 Variáveis de Ambiente
 
-Endpoints de edição (editions)
-- Base: `v1/user/videos/edits`
+A API utiliza as seguintes variáveis para configuração:
 
-6) Listagem paginada de edições
-- Método: GET
-- Rota: `GET /v1/user/videos/edits`
-- Autorização: Obrigatória
-- Query: `PaginationRequest`
-- Retorno: ViewModel paginado.
+| Variável | Descrição |
+|----------|-----------|
+| `ASPNETCORE_ENVIRONMENT` | Define o ambiente em que a aplicação está rodando (`Development`, `Staging`, `Production`) |
+| `MongoDbConnectionString` | String de conexão para o banco MongoDB |
+| `S3BucketBaseUrl` | URL base do bucket S3 / MinIO para armazenamento de vídeos |
+| `S3BucketName` | Nome do bucket S3 utilizado |
+| `S3BucketUser` | Usuário de acesso ao bucket S3 / MinIO |
+| `S3BucketPassword` | Senha de acesso ao bucket S3 / MinIO |
+| `KafkaConnectionString` | String de conexão para o broker Kafka |
+| `KafkaProduceTopicName` | Nome do tópico Kafka usado para publicar eventos de edição |
+| `AppName` | Nome da aplicação (usado em logs e métricas) |
+| `AWS_CLIENT_ID` | Identificador do cliente usado na integração com AWS Cognito |
+| `AWS_CLIENT_SECRET` | Segredo associado ao `AWS_CLIENT_ID` para autenticação junto ao Cognito |
+| `AWS_USER_POOL_ID` | ID do pool de usuários Cognito que armazena os usuários do sistema |
+| `AWS_REGION` | Região dos recursos AWS |
+| `AWS_ACCESS_KEY_ID` | Chave de acesso da conta ou role AWS utilizada para operações programáticas |
+| `AWS_SECRET_ACCESS_KEY` | Segredo correspondente à `AWS_ACCESS_KEY_ID` utilizado para autenticação AWS |
 
-7) Criar edição
-- Método: POST
-- Rota: `POST /v1/user/videos/edits`
-- Autorização: Obrigatória
-- Body: `CreateVideoEditRequest` (JSON)
-- Retorno: `200 OK` com o `id` da edição.
+## 👤 Convenções
 
-8) Iniciar edição
-- Método: POST
-- Rota: `POST /v1/user/videos/edits/{id}/start`
-- Autorização: Obrigatória
-- Ação: inicia processamento/edição; retorna `204 No Content`.
+- Todas as requisições e respostas utilizam **JSON** (exceto upload/download de arquivos que usam stream).
+- Utilize um cliente HTTP (Postman, curl, Scalar etc.) para testar os endpoints.
+- Configurações de ambiente estão em `appsettings.json` / `appsettings.Development.json`.
+- Upload de vídeo usa stream direto no corpo do request — enviar `fileName` por header.
+- Middlewares de validação (`FileTypeValidationMiddleware`) garantem que apenas tipos de arquivo permitidos sejam aceitos.
+- Erros são tratados de forma centralizada pelo `ErrorHandlingMiddleware`.
 
-9) Atualizar status da edição
-- Método: PATCH
-- Rota: `PATCH /v1/user/videos/edits/{id}/status`
-- Autorização: Uso Interno sem autenticação
-- Body: `UpdateEditionStatusRequest` (contém `userId` e `Status`)
-- Ação: atualiza status da edição; retorna `204 No Content`.
+## 🏦 Banco de Dados
 
-10) Download de edição (resultado)
-- Método: GET
-- Rota: `GET /v1/user/videos/edits/{id}/download`
-- Autorização: Obrigatória
-- Comportamento: stream de arquivo com `Content-Type` e `Content-Disposition`.
+O serviço utiliza **MongoDB** como banco de dados. As entidades principais seguem as estruturas abaixo:
 
-UI de referência (Scalar)
-- Observação: O Scalar foi usado em lugar do Swagger/OpenAPI
-  - Rode a API localmente e acesse a raiz/paths comuns (ex.: `/scalar`, `/scalar-api`, `/openapi`) ou verifique os logs de inicialização.
+### Video
 
-Observações finais
-- Todos os endpoints principais exigem JWT salvo exceção apontada no PATCH de status que será de uso interno.
-- Upload usa stream direto no corpo do request — enviar `fileName` por header.
-- Valide tipos de arquivo e tamanhos conforme middleware existente.
+| Campo | Tipo |
+|-------|------|
+| Id | string |
+| CreatedAt | datetime |
+| UserId | string |
+| Path | string |
+| Name | string |
+| ContentType | string |
+| ContentLength | long |
+
+### VideoEdit
+
+| Campo | Tipo |
+|-------|------|
+| Id | string |
+| CreatedAt | datetime |
+| UserId | string |
+| Recipient | string |
+| Type | EditType (`None`, `Frame`) |
+| Status | EditStatus (`None`, `Created`, `Processing`, `Processed`, `Error`) |
+| VideoId | string |
+| EditPath | string |
+| NotificationTargets | lista de NotificationTarget |
+
+## 🐳 Como Executar
+
+### Pré-requisitos
+
+- [.NET 10 SDK](https://dotnet.microsoft.com/)
+- [Docker & Docker Compose](https://www.docker.com/)
+
+### Rodando localmente (sem Docker)
+
+```bash
+dotnet restore
+dotnet build
+dotnet run --project src/Drivers/Api
+```
+
+### Rodando com Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+Isso irá subir a API junto com as dependências: **Kafka**, **MongoDB**, **MinIO** e **Kafka UI**.
+
+| Serviço | Porta |
+|---------|-------|
+| VideoFrame API | `8080` / `8081` |
+| Kafka | `9092` |
+| Kafka UI | `8083` |
+| MongoDB | `27017` |
+| MinIO (API) | `9000` |
+| MinIO (Console) | `9001` |
+
+## 📖 Documentação Interativa (Scalar)
+
+Rode a API localmente e acesse `/scalar/v1` para explorar e testar os endpoints via interface gráfica.
