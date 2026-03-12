@@ -45,6 +45,8 @@ internal class VideoEditController : IVideoEditController
             throw new Exception("This edit is not processed");
         }
 
+        videoEdit.EditPath = $"users/{userRequest.Id}/{videoEdit.Type}/{videoEdit.Id}.zip";
+
         var fileStream = await _videoEditUseCase.DownloadAsync(videoEdit.EditPath!, cancellationToken);
 
         return new DownloadPresenter($"{videoEdit.Type}.zip", "application/octet-stream", fileStream);
