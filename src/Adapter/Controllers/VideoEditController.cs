@@ -30,7 +30,7 @@ internal class VideoEditController : IVideoEditController
             createvideoEditRequest.Type,
             EditStatus.Created,
             createvideoEditRequest.VideoId,
-            notificationTargets);
+            notificationTargets);        
 
         var id = await _videoEditUseCase.CreateAsync(videoEdit, cancellationToken);
         return new CreatePresenter(id);

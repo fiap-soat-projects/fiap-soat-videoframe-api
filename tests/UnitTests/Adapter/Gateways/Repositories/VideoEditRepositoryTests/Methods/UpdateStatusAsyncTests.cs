@@ -26,8 +26,6 @@ public class UpdateStatusAsyncTests : VideoEditRepositoryDependenciesMock
     [InlineData(EditStatus.Created, "Created")]
     [InlineData(EditStatus.Processing, "Processing")]
     [InlineData(EditStatus.Processed, "Processed")]
-    [InlineData(EditStatus.Sending, "Sending")]
-    [InlineData(EditStatus.Sent, "Sent")]
     [InlineData(EditStatus.Error, "Error")]
     public async Task When_Different_Status_Then_Converts_To_String_Correctly(EditStatus status, string expectedStatusString)
     {
@@ -65,7 +63,7 @@ public class UpdateStatusAsyncTests : VideoEditRepositoryDependenciesMock
         // Arrange
         var id = "edit-123";
         var userId = "user-456";
-        var status = EditStatus.Sent;
+        var status = EditStatus.Processed;
         var cancellationToken = CancellationToken.None;
 
         _videoEditMongoDbRepositoryMock.UpdateStatusAsync(id, userId, status.ToString(), cancellationToken)

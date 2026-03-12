@@ -1,6 +1,7 @@
 ﻿using Api.Middlewares.Exceptions;
 using FileSignatures;
 using FileSignatures.Formats;
+using Microsoft.AspNetCore.Http.Features;
 using System.Buffers;
 
 public class FileTypeValidationMiddleware
@@ -31,6 +32,10 @@ public class FileTypeValidationMiddleware
         {
             throw new UploadContentTypeException();
         }
+
+        var maxBodySizeFeature = context.Features.Get<IHttpMaxRequestBodySizeFeature>();
+        if (maxBodySizeFeature is { IsReadOnly: false })
+            maxBodySizeFeature.MaxRequestBodySize = null;
 
         var reader = context.Request.BodyReader;
 

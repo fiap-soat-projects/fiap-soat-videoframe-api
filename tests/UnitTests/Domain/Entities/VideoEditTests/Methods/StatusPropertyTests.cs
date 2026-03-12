@@ -34,8 +34,6 @@ public class StatusPropertyTests : VideoEditDependenciesMock
     [InlineData(EditStatus.Created)]
     [InlineData(EditStatus.Processing)]
     [InlineData(EditStatus.Processed)]
-    [InlineData(EditStatus.Sending)]
-    [InlineData(EditStatus.Sent)]
     [InlineData(EditStatus.Error)]
     public void When_Status_Is_Set_With_Different_Valid_Values_Then_Updates_Property(EditStatus newStatus)
     {

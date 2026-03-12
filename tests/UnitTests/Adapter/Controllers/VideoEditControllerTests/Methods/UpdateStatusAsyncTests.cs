@@ -32,8 +32,6 @@ public class UpdateStatusAsyncTests : VideoEditControllerDependenciesMock
     [InlineData(EditStatus.Created)]
     [InlineData(EditStatus.Processing)]
     [InlineData(EditStatus.Processed)]
-    [InlineData(EditStatus.Sending)]
-    [InlineData(EditStatus.Sent)]
     [InlineData(EditStatus.Error)]
     public async Task When_Different_Statuses_Then_Calls_UseCase_With_Correct_Status(EditStatus status)
     {

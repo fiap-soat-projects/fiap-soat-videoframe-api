@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Domain;
 
 [ExcludeFromCodeCoverage]
-public static class AdapterExtensions
+public static class DomainExtensions
 {
     public static IServiceCollection InjectDomainDependencies(this IServiceCollection services)
     {

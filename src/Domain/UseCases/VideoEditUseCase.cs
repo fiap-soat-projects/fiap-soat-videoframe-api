@@ -69,7 +69,7 @@ internal class VideoEditUseCase : IVideoEditUseCase
         User user,
         CancellationToken cancellationToken)
     {
-        if (videoEdit.Status > EditStatus.Processing) 
+        if (videoEdit.Status is EditStatus.Processing or EditStatus.Processed) 
         {
             throw new Exception("This edit is already started");
         }

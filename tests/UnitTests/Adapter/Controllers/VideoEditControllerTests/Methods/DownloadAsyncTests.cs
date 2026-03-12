@@ -78,8 +78,6 @@ public class DownloadAsyncTests : VideoEditControllerDependenciesMock
     [Theory]
     [InlineData(EditStatus.Created)]
     [InlineData(EditStatus.Processing)]
-    [InlineData(EditStatus.Sending)]
-    [InlineData(EditStatus.Sent)]
     [InlineData(EditStatus.Error)]
     public async Task When_VideoEdit_Status_Is_Not_Processed_Then_Throws_For_Any_Non_Processed_Status(EditStatus status)
     {
