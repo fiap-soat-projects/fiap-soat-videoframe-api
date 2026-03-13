@@ -13,7 +13,7 @@ services:
       - S3BucketUser=${S3BucketUser}
       - S3BucketPassword=${S3BucketPassword}
       - S3BucketName=${S3BucketName}
-      - MongoDbConnectionString=${MongoDbConnectionString}
+      - VideoframeMongoDbConnectionString=${VideoframeMongoDbConnectionString}
       - KafkaConnectionString=${KafkaConnectionString}
       - KafkaProduceTopicName=${KafkaProduceTopicName}
       - AppName=${AppName}

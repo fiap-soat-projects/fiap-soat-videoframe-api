@@ -51,7 +51,7 @@ A API utiliza as seguintes variáveis para configuração:
 | Variável | Descrição |
 |----------|-----------|
 | `ASPNETCORE_ENVIRONMENT` | Define o ambiente em que a aplicação está rodando (`Development`, `Staging`, `Production`) |
-| `MongoDbConnectionString` | String de conexão para o banco MongoDB |
+| `VideoframeMongoDbConnectionString` | String de conexão para o banco MongoDB |
 | `S3BucketBaseUrl` | URL base do bucket S3 / MinIO para armazenamento de vídeos |
 | `S3BucketName` | Nome do bucket S3 utilizado |
 | `S3BucketUser` | Usuário de acesso ao bucket S3 / MinIO |

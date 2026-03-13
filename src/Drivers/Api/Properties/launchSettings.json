@@ -16,7 +16,7 @@
         "S3BucketUser": "admin",
         "S3BucketPassword": "admin123",
         "S3BucketName": "alison-teste",
-        "MongoDbConnectionString": "mongodb://admin:admin123@localhost:27017/videoframe?authSource=admin",
+        "VideoframeMongoDbConnectionString": "mongodb://admin:admin123@localhost:27017/videoframe?authSource=admin",
         "KafkaConnectionString": "localhost:9092",
         "KafkaProduceTopicName": "teste",
         "AppName": "VideoFrame.Api",

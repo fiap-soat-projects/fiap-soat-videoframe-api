@@ -59,7 +59,7 @@ public static class InfrastructureExtensions
 
     private static IServiceCollection RegisterConnections(this IServiceCollection services)
     {
-        var mongoConnectionString = StaticEnvironmentVariableProvider.MongoDbConnectionString;
+        var mongoConnectionString = StaticEnvironmentVariableProvider.VideoframeMongoDbConnectionString;
         var appName = Environment.GetEnvironmentVariable(APP_NAME_VARIABLE_KEY);
 
         EnvironmentVariableNotFoundException.ThrowIfIsNullOrWhiteSpace(appName, APP_NAME_VARIABLE_KEY);
