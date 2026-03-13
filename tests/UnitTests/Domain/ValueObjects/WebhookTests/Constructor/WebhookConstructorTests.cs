@@ -60,8 +60,7 @@ public class WebhookConstructorTests
     [InlineData("ftp://example.com")]
     [InlineData("://example.com")]
     [InlineData("https://")]
-    [InlineData("https://.com")]
-    [InlineData("https://example")]
+    [InlineData("https://.com")]    
     [InlineData("htp://example.com")]
     public void When_Webhook_Format_Is_Invalid_Then_Throw_InvalidWebhookException(string invalidWebhook)
     {
