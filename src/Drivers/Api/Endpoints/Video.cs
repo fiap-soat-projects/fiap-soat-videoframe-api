@@ -21,8 +21,7 @@ public class Video : ControllerBase
 
     [Authorize]
     [HttpPost]
-    [DisableRequestSizeLimit]
-    //[RequestSizeLimit(10485760)]
+    [RequestSizeLimit(26_214_400)]
     public async Task<IActionResult> UploadAsync(
         [FromHeader] string fileName,
         CancellationToken cancellationToken)
@@ -50,6 +49,7 @@ public class Video : ControllerBase
 
     [Authorize]
     [HttpGet("{id}/download")]
+    [RequestSizeLimit(26_214_400)]
     public async Task DownloadAsync([FromRoute] string id, CancellationToken cancellationToken)
     {
         var userRequest = new UserRequest(_userContext.Id, _userContext.Name, _userContext.Email);

@@ -33,9 +33,9 @@ public class FileTypeValidationMiddleware
             throw new UploadContentTypeException();
         }
 
-        var maxBodySizeFeature = context.Features.Get<IHttpMaxRequestBodySizeFeature>();
-        if (maxBodySizeFeature is { IsReadOnly: false })
-            maxBodySizeFeature.MaxRequestBodySize = null;
+        //var maxBodySizeFeature = context.Features.Get<IHttpMaxRequestBodySizeFeature>();
+        //if (maxBodySizeFeature is { IsReadOnly: false })
+        //    maxBodySizeFeature.MaxRequestBodySize = null;
 
         var reader = context.Request.BodyReader;
 
