@@ -106,4 +106,5 @@ volumes:
 
 networks:
   videoframe-api-network:
-    driver: bridge  
+    external: true
+    name: videoframe-network
